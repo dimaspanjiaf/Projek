@@ -1,199 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auth Page</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body{
-  margin:0;
-  font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
-  background: linear-gradient(135deg, #667eea, #764ba2, #6b73ff);
-  background-size: 400% 400%;
-  animation: gradientBG 10s ease infinite;
-}
+  <title>Auth Page</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="stylesheet" href="style.css">
 
-@keyframes gradientBG {
-  0% {background-position: 0% 50%;}
-  50% {background-position: 100% 50%;}
-  100% {background-position: 0% 50%;}
-}
-
-nav{
-  position:fixed;
-  top:0;
-  width:100%;
-  background:rgba(0,0,0,0.7);
-  padding:15px;
-  text-align:center;
-  z-index:10;
-}
-nav a{
-  color:#fff;
-  margin:0 10px;
-  text-decoration:none;
-  cursor:pointer;
-}
-
-.wrapper{
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  position:relative;
-}
-
-.wrapper::before{
-  content:"REMINDER";
-  position:absolute;
-  font-size:120px;
-  font-weight:700;
-  color:rgba(255,255,255,0.07);
-  letter-spacing:10px;
-  transform:rotate(-20deg);
-}
-
-.container{
-  background:rgba(255,255,255,0.95);
-  padding:30px;
-  border-radius:15px;
-  width:320px;
-  box-shadow:0 15px 40px rgba(0,0,0,0.2);
-  z-index:1;
-}
-
-h2{text-align:center;margin-bottom:15px;}
-
-input,button{
-  width:100%;
-  padding:10px;
-  margin:6px 0;
-  border-radius:8px;
-  border:1px solid #ddd;
-}
-
-button{
-  background:#667eea;
-  color:#fff;
-  border:none;
-  cursor:pointer;
-}
-
-.message{
-  text-align:center;
-  font-size:14px;
-  margin-top:5px;
-}
-
-.success{color:green}
-.error{color:red}
-
-.form{display:none}
-.active{display:block}
-
-.switch{
-  text-align:center;
-  font-size:14px;
-  margin-top:10px;
-  cursor:pointer;
-  color:#667eea;
-}
-</style>
 </head>
 
 <body>
 
-<nav>
-  <a onclick="showSignIn()">Sign in</a>
-</nav>
+  <nav>
+    <a onclick="showSignIn()">Sign in</a>
+  </nav>
 
-<div class="wrapper">
-  <div class="container animate__animated animate__fadeIn">
+  <div class="wrapper">
+    <div class="container animate__animated animate__fadeIn">
+      <div id="signin" class="form">
+        <h2>Sign In</h2>
+        <input id="loginEmail" placeholder="Email">
+        <input id="loginPassword" type="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <div id="loginMsg" class="message"></div>
+        <div class="switch" onclick="toggle('signup')">Don't have an account? Sign Up</div>
+      </div>
 
-    
-
-  
-    <div id="signin" class="form">
-      <h2>Sign In</h2>
-      <input id="loginEmail" placeholder="Email">
-      <input id="loginPassword" type="password" placeholder="Password">
-      <button onclick="login()">Login</button>
-      <div id="loginMsg" class="message"></div>
-      <div class="switch" onclick="toggle('signup')">Don't have an account? Sign Up</div>
+      <div id="signup" class="form active">
+        <h2>Sign Up</h2>
+        <input id="regName" placeholder="Name">
+        <input id="regEmail" placeholder="Email">
+        <input id="regPass" type="password" placeholder="Password">
+        <button onclick="register()">Register</button>
+        <div id="registerMsg" class="message"></div>
+        <div class="switch" onclick="toggle('signin')">Already have an account? Sign In</div>
+      </div>
     </div>
-
-   
-    <div id="signup" class="form active">
-      <h2>Sign Up</h2>
-      <input id="regName" placeholder="Name">
-      <input id="regEmail" placeholder="Email">
-      <input id="regPass" type="password" placeholder="Password">
-      <button onclick="register()">Register</button>
-      <div id="registerMsg" class="message"></div>
-      <div class="switch" onclick="toggle('signin')">Already have an account? Sign In</div>
-    </div>
-
-    
-
   </div>
-</div>
-
-<script>
-function hideAll(){
- document.querySelectorAll('.form').forEach(f=>f.classList.remove('active'));
-}
-
-
-function showSignIn(){ hideAll(); document.getElementById('signin').classList.add('active'); }
-
-
-function toggle(f){ hideAll(); document.getElementById(f).classList.add('active'); }
-
-function register(){
- let users = JSON.parse(localStorage.getItem('users'))||[];
- let email = regEmail.value;
- let pass = regPass.value;
- let name = regName.value;
- let msg = document.getElementById('registerMsg');
-
- if(!email || !pass || !name){
-  msg.className='message error';
-  msg.innerText='Semua field wajib diisi!';
-  return;
- }
-
- if(users.find(u=>u.email===email)){
-  msg.className='message error';
-  msg.innerText='Email sudah terdaftar!';
-  return;
- }
-
- users.push({email,pass,name});
- localStorage.setItem('users',JSON.stringify(users));
-
- msg.className='message success';
- msg.innerText='Register berhasil! Silakan login.';
-}
-
-function login(){
- let users = JSON.parse(localStorage.getItem('users'))||[];
- let email = loginEmail.value;
- let pass = loginPassword.value;
- let msg = document.getElementById('loginMsg');
-
- let user = users.find(u=>u.email===email && u.pass===pass);
-
- if(user){
-  msg.className='message success';
-  msg.innerText='Login berhasil! Selamat datang '+user.name;
- }else{
-  msg.className='message error';
-  msg.innerText='Email atau password salah!';
- }
-}
-</script>
 
 </body>
+
+<script src="script.js"></script>
+
 </html>
