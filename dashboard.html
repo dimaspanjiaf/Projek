@@ -5,16 +5,18 @@
     <title>Dashboard Buku</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="dashboard">
 
     <div class="sidebar">
         <h2>Dashboard</h2>
         <a href="index.html">Home</a>
-        <a href="about.html">Tentang</a>
+        <a href="dashboard.html" class="active">Dashboard</a>
         <a href="add-book.html">Tambah Buku</a>
         <a href="detail-book.html">Detail Buku</a>
+        <a href="about.html">About</a>
         <a href="login.html">Login</a>
     </div>
+
 
     <div class="main">
 
@@ -24,30 +26,34 @@
 
         <div class="cards">
             <div class="card">
-                <h3>120</h3>
-                <p>Total Buku</p>
+            <h3 id="total-buku">0</h3>
+            <p>Total Buku</p>
+        </div>
+        <div class="card">
+            <h3 id="total-kategori">0</h3>
+            <p>Kategori</p>
             </div>
-            <div class="card">
-                <h3>50</h3>
-                <p>Kategori</p>
-            </div>
-            <div class="card">
-                <h3>30</h3>
-                <p>User</p>
+        <div class="card">
+            <h3 id="total-user">0</h3>
+            <p>User</p>
             </div>
         </div>
 
         <h3>Daftar Buku</h3>
-        <table>
-            <tr>
-                <th>No</th>
-                <th>Judul</th>
-                <th>Penulis</th>
-                <th>Tahun</th>
-            </tr>
+        <table id="tabel-buku" border="1" cellpadding="10" cellspacing="0">
+        <thead>
+        <tr>
+            <th>No</th>
+            <th>Judul</th>
+            <th>Penulis</th>
+            <th>Tahun</th>
+            <th>Aksi</th>
+        </tr>
+        </thead>
+        <tbody id="data-buku">
+        </tbody>
         </table>
-
     </div>
-
+    <script src="script.js"></script>
 </body>
 </html>
