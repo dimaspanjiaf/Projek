@@ -115,6 +115,7 @@ button {
     color: #667eea;
 }
 
+/* DASHBOARD */
 * {
     box-sizing: border-box;
 }
@@ -245,4 +246,67 @@ body.dashboard {
 }
 .dashboard .card:nth-child(3) {
     border-left: 5px solid #e67e22;
+}
+
+.dashboard .aksi {
+    display: flex;
+    gap: 8px;
+}
+
+.dashboard .aksi a,
+.dashboard .aksi button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: 500;
+}
+
+.dashboard .btn-detail {
+    background: #3498db;
+}
+
+.dashboard .btn-detail:hover {
+    background: #2980b9;
+}
+
+.dashboard .btn-hapus {
+    background: #e74c3c;
+}
+
+.dashboard .btn-hapus:hover {
+    background: #c0392b;
+}
+
+.dashboard .undo-alert {
+    background: #2ecc71;
+    color: white;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dashboard .btn-undo {
+    background: white;
+    color: #2ecc71;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.dashboard .btn-undo:hover {
+    background: #f1f1f1;
 }
