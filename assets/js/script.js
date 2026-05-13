@@ -153,3 +153,84 @@ let buku = JSON.parse(localStorage.getItem("buku")) || [
 ];
 
 const tbody = document.getElementById("data-buku");
+
+// ========= DARK MODE =========
+
+function toggleDarkMode() {
+
+  document.body.classList.toggle("dark-mode");
+
+  if (
+    document.body.classList.contains("dark-mode")
+  ) {
+
+    localStorage.setItem("darkMode", "enabled");
+
+  } else {
+
+    localStorage.setItem("darkMode", "disabled");
+  }
+}
+
+window.addEventListener("load", function() {
+
+  if (
+    localStorage.getItem("darkMode")
+    === "enabled"
+  ) {
+
+    document.body.classList.add("dark-mode");
+  }
+});
+
+
+// ========= SEARCH BUKU =========
+
+function searchBuku() {
+
+  const input =
+    document.getElementById("searchInput");
+
+  const filter =
+    input.value.toLowerCase();
+
+  const rows =
+    document.querySelectorAll("#data-buku tr");
+
+  rows.forEach(function(row) {
+
+    const text =
+      row.innerText.toLowerCase();
+
+    if (text.includes(filter)) {
+
+      row.style.display = "";
+
+    } else {
+
+      row.style.display = "none";
+    }
+  });
+}
+
+
+// ========= SHOW PASSWORD =========
+
+function togglePassword(id, element) {
+
+  const input =
+    document.getElementById(id);
+
+  if (input.type === "password") {
+
+    input.type = "text";
+
+    element.innerText = "🙈";
+
+  } else {
+
+    input.type = "password";
+
+    element.innerText = "👁";
+  }
+}
