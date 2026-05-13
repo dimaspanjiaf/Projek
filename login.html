@@ -1,38 +1,74 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-    <link rel="stylesheet" href="aset/css/style.css">
-    <title>Login - MyRead</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Reminder</title>
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body>
-    <div style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background: var(--light);">
-        <div class="card" style="width: 400px;">
-            <h2 id="formTitle">Sign In</h2>
-            <p id="formSub" style="color: var(--gray); margin-bottom: 20px;">Masukkan akun Anda</p>
-            
-            <form id="authForm">
-                <input type="email" id="email" placeholder="Email" required>
-                <input type="password" id="pass" placeholder="Password" required>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Masuk Sekarang</button>
-            </form>
-            
-            <p style="margin-top: 20px; font-size: 14px; text-align: center;">
-                Belum punya akun? <a href="#" onclick="toggleAuth()" style="color: var(--primary); font-weight: bold;">Daftar</a>
-            </p>
+
+<body class="login-page">
+
+<div class="auth-container" id="authContainer">
+
+    <div class="form-box sign-up">
+    <form>
+        <h1>Create Account</h1>
+        <input type="text" id="regName" placeholder="Nama">
+        <input type="email" id="regEmail" placeholder="Email">
+        <div class="password-box">
+            <input
+                type="password"
+                id="regPass"
+                placeholder="Masukkan password"
+            >
+
+            <span onclick="togglePassword('regPass', this)">
+                👁
+            </span>
         </div>
+        <button type="button" onclick="register()">Sign Up</button>
+        <p id="registerMsg" class="message"></p>
+    </form>
     </div>
 
-    <script>
-        let isLogin = true;
-        function toggleAuth() {
-            isLogin = !isLogin;
-            document.getElementById('formTitle').innerText = isLogin ? "Sign In" : "Sign Up";
-            document.getElementById('formSub').innerText = isLogin ? "Masukkan akun Anda" : "Buat akun baru Anda";
-        }
-        document.getElementById('authForm').onsubmit = (e) => {
-            e.preventDefault();
-            window.location.href = "dashboard.html";
-        };
-    </script>
+    <div class="form-box sign-in">
+    <form>
+        <h1>Sign In</h1>
+        <input type="email" id="loginEmail" placeholder="Email">
+        <div class="password-box">
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Masukkan password"
+            >
+
+            <span onclick="togglePassword('loginPassword', this)">
+                👁
+            </span>
+        </div>
+        <button type="button" onclick="login()">Sign In</button>
+        <p id="loginMsg" class="message"></p>
+    </form>
+    </div>
+
+    <div class="toggle-box">
+      <div class="toggle-panel toggle-left">
+        <h1>Welcome Back!</h1>
+        <p>Sudah punya akun? Login untuk melihat riwayat bacaanmu.</p>
+        <button type="button" onclick="showLogin()">Sign In</button>
+      </div>
+
+      <div class="toggle-panel toggle-right">
+        <h1>Hello, Reader!</h1>
+        <p>Belum punya akun? Daftar dan mulai catat bacaanmu.</p>
+        <button type="button" onclick="showRegister()">Sign Up</button>
+      </div>
+    </div>
+
+  </div>
+
+<script src="assets/js/script.js"></script>
 </body>
 </html>
