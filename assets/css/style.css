@@ -103,6 +103,125 @@ button {
 .card h3 {
   margin-bottom: 10px;
 }
+/* ========= ANIMASI INDEX ========= */
+
+/* hero muncul perlahan */
+.hero-text {
+  animation: fadeUp 1s ease;
+}
+
+/* animasi title */
+.hero h2 {
+  animation: slideDown 1s ease;
+}
+
+/* animasi paragraf */
+.hero p {
+  animation: fadeIn 1.5s ease;
+}
+
+/* tombol animasi */
+.btn {
+  display: inline-block;
+  transition: 0.3s;
+  animation: zoomIn 1.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+}
+
+/* animasi card */
+.card {
+  transition: 0.4s;
+  animation: fadeUp 1s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+}
+
+/* animasi muncul bergantian */
+.features .card:nth-child(1) {
+  animation-delay: 0.2s;
+}
+
+.features .card:nth-child(2) {
+  animation-delay: 0.4s;
+}
+
+.features .card:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+.features .card:nth-child(4) {
+  animation-delay: 0.8s;
+}
+
+/* supaya delay bekerja */
+.features .card {
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+
+/* ========= KEYFRAMES ========= */
+
+/* fade naik */
+@keyframes fadeUp {
+
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* fade biasa */
+@keyframes fadeIn {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* slide dari atas */
+@keyframes slideDown {
+
+  from {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* zoom */
+@keyframes zoomIn {
+
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 
 
 /* ========= login.html ========= */
