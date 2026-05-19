@@ -93,16 +93,130 @@ function login() {
 
 
 // ========= dashboard.html =========
+if (document.body.classList.contains("dashboard")) {
 
 let dataTerhapus = null;
-let buku = JSON.parse(localStorage.getItem("buku")) || [
-    { judul: "Laskar Pelangi", penulis: "Andrea Hirata", tahun: 2005, kategori: "Novel" },
-    { judul: "Bumi", penulis: "Tere Liye", tahun: 2014, kategori: "Fiksi" },
-    { judul: "Atomic Habits", penulis: "James Clear", tahun: 2018, kategori: "Self Improvement" }
-];
+let buku = JSON.parse(localStorage.getItem("buku")) || [];
 
 const tbody = document.getElementById("data-buku");
 
+// ================= TAMPILKAN BUKU =================
+function tampilkanBuku(data = buku) {
+
+    tbody.innerHTML = "";
+
+    data.forEach((item, index) => {
+
+        const row = `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${item.judul}</td>
+                <td>${item.penulis}</td>
+                <td>${item.tahun}</td>
+
+                <td>
+                    <div class="aksi">
+
+                        <a href="detail-book.html?id=${index}" class="btn-detail">
+                            Detail
+                        </a>
+
+                        <button onclick="hapusBuku(${index})" class="btn-hapus">
+                            Hapus
+                        </button>
+
+                    </div>
+                </td>
+            </tr>
+        `;
+
+        tbody.innerHTML += row;
+    });
+
+    updateDashboard();
+}
+
+// ================= UPDATE CARD =================
+function updateDashboard() {
+
+    // Total Buku
+    document.getElementById("total-buku").innerText = buku.length;
+
+    // Total Kategori
+    const kategoriUnik = [
+        ...new Set(buku.map(item => item.kategori))
+    ];
+
+    document.getElementById("total-kategori").innerText =
+        kategoriUnik.length;
+
+    // Total User
+    document.getElementById("total-user").innerText = 30;
+}
+
+// ================= HAPUS =================
+function hapusBuku(index) {
+
+    let yakin = confirm("Yakin ingin menghapus buku?");
+
+    if (yakin) {
+
+        // Simpan data sementara
+        dataTerhapus = {
+            data: buku[index],
+            index: index
+        };
+
+        // Hapus data
+        buku.splice(index, 1);
+
+        // Update localStorage
+        localStorage.setItem("buku", JSON.stringify(buku));
+
+        // Render ulang
+        tampilkanBuku();
+
+        // Tampilkan undo
+        tampilkanUndo();
+    }
+}
+
+// ================= UNDO =================
+function undoHapus() {
+
+    if (dataTerhapus !== null) {
+
+        buku.splice(
+            dataTerhapus.index,
+            0,
+            dataTerhapus.data
+        );
+
+        localStorage.setItem("buku", JSON.stringify(buku));
+
+        tampilkanBuku();
+
+        document.getElementById("undo-box").innerHTML = "";
+
+        dataTerhapus = null;
+    }
+}
+
+// ================= TAMPILKAN UNDO =================
+function tampilkanUndo() {
+
+    const undoBox = document.getElementById("undo-box");
+
+    undoBox.innerHTML = `
+        <div class="undo-alert">
+            Buku berhasil dihapus
+
+            <button onclick="undoHapus()" class="btn-undo">
+                Undo
+            </button>
+        </div>
+    `;
+}
 
 // ========= DARK MODE =========
 
@@ -165,40 +279,52 @@ function togglePassword(id, element) {
   }
 }
 
+// ========= LOAD DATA =========
+tampilkanBuku();
+}
+
 
 // ========= add-book.html =========
 
-let progressBuku = JSON.parse(localStorage.getItem("progressBuku")) || [];
+let buku = JSON.parse(localStorage.getItem("buku")) || [];
 
 const judulInput = document.getElementById("judul");
+const penulisInput = document.getElementById("penulis");
 const episodeInput = document.getElementById("episode");
 
 
 // ========= TAMBAH DATA =========
 
 function tambahData() {
-  const judul = judulInput.value;
-  const episode = episodeInput.value;
 
-  if (judul === "" || episode === "") {
-    alert("Semua data wajib diisi!");
-    return;
-  }
+    if (
+        judulInput.value.trim() === "" ||
+        penulisInput.value.trim() === "" ||
+        episodeInput.value.trim() === ""
+    ) {
+        alert("Semua input harus diisi!");
+        return;
+    }
 
-  const dataBaru = {
-    judul: judul,
-    episode: episode
-  };
+    const dataBaru = {
+        judul: judulInput.value,
+        penulis: penulisInput.value,
+        tahun: episodeInput.value,
+        kategori: "Progress"
+    };
 
-  progressBuku.push(dataBaru);
-  localStorage.setItem("progressBuku", JSON.stringify(progressBuku));
+    buku.push(dataBaru);
 
-  // Simpan index data yang baru saja ditambahkan untuk dipakai di halaman detail
-  const indexBaru = progressBuku.length - 1;
-  localStorage.setItem("detailBukuIndex", indexBaru);
+    localStorage.setItem("buku", JSON.stringify(buku));
 
-  window.location.href = "detail-book.html";
+    alert("Buku berhasil ditambahkan!");
+
+    window.location.href = "dashboard.html";
 }
+
+// ========= GLOBAL FUNCTION =========
+window.tambahData = tambahData;
+
 
 
 // ========= DETAIL BOOK =========
@@ -206,14 +332,20 @@ function tambahData() {
 const detailIndex = localStorage.getItem("detailBukuIndex");
 const detailJudul = document.getElementById("detailJudul");
 const detailEpisode = document.getElementById("detailEpisode");
+const detailPenulis = document.getElementById("detailPenulis");
+const detailTahun = document.getElementById("detailTahun");
+const detailKategori = document.getElementById("detailKategori");
 
 // Render data detail saat halaman detail dibuka
 if (detailIndex !== null && detailJudul && detailEpisode) {
-  const dataAktif = progressBuku[detailIndex];
+  const dataAktif = buku[detailIndex];
   
   if (dataAktif) {
     detailJudul.innerText = dataAktif.judul;
-    detailEpisode.innerText = dataAktif.episode;
+    detailEpisode.innerText = dataAktif.tahun;
+    detailPenulis.innerText = dataAktif.penulis;
+    detailTahun.innerText = dataAktif.tahun;
+    detailKategori.innerText = dataAktif.kategori;
   } else {
     detailJudul.innerText = "Data tidak ditemukan";
     detailEpisode.innerText = "-";
@@ -224,7 +356,7 @@ if (detailIndex !== null && detailJudul && detailEpisode) {
 function editProgressDetail() {
   if (detailIndex === null) return;
 
-  const data = progressBuku[detailIndex];
+  const data = buku[detailIndex];
   const judulBaru = prompt("Edit Judul", data.judul);
   const episodeBaru = prompt("Edit Progress", data.episode);
 
@@ -232,12 +364,12 @@ function editProgressDetail() {
     return;
   }
 
-  progressBuku[detailIndex] = {
+  buku[detailIndex] = {
     judul: judulBaru,
     episode: episodeBaru
   };
 
-  localStorage.setItem("progressBuku", JSON.stringify(progressBuku));
+  localStorage.setItem("buku", JSON.stringify(buku));
   
   // Update tampilan langsung di web luar tanpa reload penuh
   detailJudul.innerText = judulBaru;
@@ -250,7 +382,7 @@ function hapusProgressDetail() {
 
   const yakin = confirm("Yakin ingin menghapus progress ini?");
   if (yakin) {
-    progressBuku.splice(detailIndex, 1);
+    buku.splice(detailIndex, 1);
     localStorage.setItem("progressBuku", JSON.stringify(progressBuku));
     localStorage.removeItem("detailBukuIndex"); // hapus tracker index aktif
     
