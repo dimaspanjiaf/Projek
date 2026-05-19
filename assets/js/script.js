@@ -251,38 +251,39 @@ if (list) {
 
 function tambahData() {
 
-  const judul =
-    judulInput.value;
-
-  const episode =
-    episodeInput.value;
+  const judul = judulInput.value;
+  const episode = episodeInput.value;
 
   // validasi
   if (judul === "" || episode === "") {
-
     alert("Semua data wajib diisi!");
-
     return;
   }
 
-  // simpan data
-  progressBuku.push({
+  // data baru
+  const dataBaru = {
     judul: judul,
     episode: episode
-  });
+  };
 
-  // simpan localStorage
+  // simpan ke array
+  progressBuku.push(dataBaru);
+
+  // simpan semua data
   localStorage.setItem(
     "progressBuku",
     JSON.stringify(progressBuku)
   );
 
-  // reset input
-  judulInput.value = "";
-  episodeInput.value = "";
+  // simpan data detail yang dipilih
+  localStorage.setItem(
+    "detailBuku",
+    JSON.stringify(dataBaru)
+  );
 
-  // refresh tampilan
-  tampilkanProgress();
+  // pindah ke halaman detail
+  window.location.href =
+    "detail-book.html";
 }
 
 
@@ -397,4 +398,33 @@ function editProgress(index) {
   );
 
   tampilkanProgress();
+}
+
+// ========= DETAIL BOOK =========
+
+const detailData =
+  JSON.parse(
+    localStorage.getItem("detailBuku")
+  );
+
+const detailJudul =
+  document.getElementById(
+    "detailJudul"
+  );
+
+const detailEpisode =
+  document.getElementById(
+    "detailEpisode"
+  );
+
+if (
+  detailData &&
+  detailJudul &&
+  detailEpisode
+) {
+  detailJudul.innerText =
+    detailData.judul;
+
+  detailEpisode.innerText =
+    detailData.episode;
 }
