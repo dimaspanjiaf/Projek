@@ -22,15 +22,18 @@
         <div class="card">
             <h2>Detail Bacaan</h2>
             <hr style="margin: 15px 0;">
-           <h2 id="detailJudul"></h2>
+            <h2 id="detailJudul"></h2>
             <p>
-            Progress Episode:
-            <strong id="detailEpisode"></strong>
+                Progress Episode: <strong id="detailEpisode"></strong>
             </p>
+            
+            <div class="aksi" style="margin: 20px 0;">
+                <button class="btn-edit" onclick="editProgressDetail()" style="padding: 8px 15px; background-color: #ffc107; border: none; cursor: pointer; margin-right: 10px;">Edit</button>
+                <button class="btn-hapus" onclick="hapusProgressDetail()" style="padding: 8px 15px; background-color: #dc3545; color: white; border: none; cursor: pointer;">Hapus</button>
+            </div>
+
             <br>
-            <a href="dashboard.html"
-            class="btn"
-            style="display:inline-block">Kembali ke Dashboard</a>
+            <a href="dashboard.html" class="btn" style="display:inline-block">Kembali ke Dashboard</a>
             <br>
         </div>
     </div>
