@@ -3,21 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>Tambah Buku</title>
-    <link rel="stylesheet" href="assets/css/add-book.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body>
+<body class="add-book">
 
-<div class="container">
-    <h1>Add Book</h1>
+    <div class="navbar">
+        <h1>BookTracker</h1>
 
-    <input type="text" id="judul" placeholder="Judul (film/novel/dll)">
-    <input type="number" id="episode" placeholder="Episode / Progress">
-    <button onclick="tambahData()">Simpan Progress</button>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="add-book.html">Add Book</a>
+            <a href="about.html">About</a>
+        </div>
+    </div>
 
-    <div id="list"></div>
-</div>
+    <div class="add-book-container">
 
-<script src="assets/js/add-book.js"></script>
+        <div class="form-card">
+
+            <h2>Add Book Progress</h2>
+
+            <input type="text" id="judul" placeholder="Judul (film/novel/dll)">
+
+            <input type="number" id="episode" placeholder="Episode / Progress">
+
+            <button onclick="tambahData()">
+                Simpan Progress
+            </button>
+
+            <div id="list"></div>
+
+        </div>
+
+    </div>
+
+<script src="assets/js/script.js"></script>
 </body>
-
 </html>

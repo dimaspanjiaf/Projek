@@ -564,6 +564,100 @@ body.dashboard {
 .about-card p {
   margin-top: 15px;
 }
+/* ========= about.html ========= */
+
+body.about-page {
+  background: linear-gradient(135deg, #f6f3ee, #d8c3a5);
+  min-height: 100vh;
+}
+
+/* container */
+.about-page .about-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+}
+
+/* card */
+.about-page .about-card {
+  width: 100%;
+  max-width: 850px;
+  background: white;
+  padding: 40px;
+  border-radius: 22px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+  transition: 0.3s;
+}
+
+.about-page .about-card:hover {
+  transform: translateY(-4px);
+}
+
+/* title */
+.about-page .about-card h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 34px;
+  color: #222;
+}
+
+/* text */
+.about-page .about-card p {
+  margin-top: 18px;
+  font-size: 18px;
+  line-height: 1.8;
+  color: #555;
+}
+
+/* button */
+.about-page .dark-btn {
+  margin-top: 30px;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 12px;
+  background: #6c63ff;
+  color: white;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.about-page .dark-btn:hover {
+  background: #5148d9;
+  transform: scale(1.03);
+}
+
+/* navbar */
+.about-page .navbar {
+  background: #2f2f2f;
+}
+
+.about-page .nav-links {
+  display: flex;
+  gap: 18px;
+}
+
+/* responsive */
+@media (max-width: 768px) {
+
+  .about-page .about-card {
+    padding: 25px;
+  }
+
+  .about-page .about-card h2 {
+    font-size: 28px;
+  }
+
+  .about-page .about-card p {
+    font-size: 16px;
+  }
+
+  .about-page .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+}
 
 /* ========= DARK MODE ========= */
 
@@ -642,4 +736,299 @@ body.dark-mode .dashboard .navbar h3 {
     grid-template-columns: 1fr;
   }
 
+}
+/* =========================
+   ADD BOOK PAGE
+========================= */
+
+
+body.add-book {
+  background: linear-gradient(135deg, #f6f3ee, #d8c3a5);
+  min-height: 100vh;
+}
+
+/* container utama */
+.add-book-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+}
+
+/* card form */
+.add-book .form-card {
+  width: 100%;
+  max-width: 500px;
+  background: white;
+  padding: 35px;
+  border-radius: 22px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+  transition: 0.3s;
+}
+
+.add-book .form-card:hover {
+  transform: translateY(-4px);
+}
+
+.add-book .form-card h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #222;
+  font-size: 30px;
+}
+
+/* input */
+.add-book .form-card input,
+.add-book .form-card select {
+  width: 100%;
+  padding: 14px 16px;
+  margin: 12px 0;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+  transition: 0.3s;
+  font-size: 15px;
+}
+
+.add-book .form-card input:focus,
+.add-book .form-card select:focus {
+  border-color: #6c63ff;
+  background: white;
+  outline: none;
+  box-shadow: 0 0 8px rgba(108, 99, 255, 0.2);
+}
+
+/* tombol */
+.add-book .form-card button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 14px;
+  background: #6c63ff;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.add-book .form-card button:hover {
+  background: #5148d9;
+  transform: scale(1.02);
+}
+
+/* list hasil */
+.add-book #list {
+  margin-top: 25px;
+}
+
+/* item progress */
+.add-book .item {
+  background: #f7f7ff;
+  border-left: 5px solid #6c63ff;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.add-book .item h3 {
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.add-book .item p {
+  color: #666;
+  font-size: 14px;
+}
+
+/* navbar khusus add book */
+.add-book .navbar {
+  background: #2f2f2f;
+}
+
+.add-book .navbar h1 {
+  color: white;
+}
+
+.add-book .nav-links {
+  display: flex;
+  gap: 18px;
+}
+
+/* responsive */
+@media (max-width: 768px) {
+
+  .add-book-container {
+    padding: 30px 15px;
+  }
+
+  .add-book .form-card {
+    padding: 25px;
+  }
+
+  .add-book .form-card h2 {
+    font-size: 24px;
+  }
+
+  .add-book .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+}
+/* tombol aksi */
+.add-book .aksi {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+/* tombol edit */
+.add-book .btn-edit {
+  flex: 1;
+  background: #3498db !important;
+}
+
+.add-book .btn-edit:hover {
+  background: #2980b9 !important;
+}
+
+/* tombol hapus */
+.add-book .btn-hapus {
+  flex: 1;
+  background: #e74c3c !important;
+}
+
+.add-book .btn-hapus:hover {
+  background: #c0392b !important;
+}
+/* ========= FIX DARK MODE ADD BOOK ========= */
+
+body.dark-mode.add-book {
+  background: #121212 !important;
+}
+
+/* container */
+body.dark-mode .add-book-container {
+  background: transparent !important;
+}
+
+/* form card */
+body.dark-mode .form-card {
+  background: #1e1e1e !important;
+  color: white !important;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+/* title */
+body.dark-mode .form-card h2 {
+  color: white !important;
+}
+
+/* input */
+body.dark-mode .form-card input,
+body.dark-mode .form-card select {
+  background: #2a2a2a !important;
+  color: white !important;
+  border: 1px solid #444 !important;
+}
+
+/* placeholder */
+body.dark-mode .form-card input::placeholder {
+  color: #bdbdbd !important;
+}
+
+/* focus */
+body.dark-mode .form-card input:focus,
+body.dark-mode .form-card select:focus {
+  border-color: #6c63ff !important;
+  box-shadow: 0 0 8px rgba(108,99,255,0.3);
+}
+
+/* list item */
+body.dark-mode .add-book .item {
+  background: #2a2a2a !important;
+  color: white !important;
+  border-left: 5px solid #6c63ff;
+}
+
+/* judul item */
+body.dark-mode .add-book .item h3 {
+  color: white !important;
+}
+
+/* paragraf item */
+body.dark-mode .add-book .item p {
+  color: #d6d6d6 !important;
+}
+
+/* navbar */
+body.dark-mode .navbar {
+  background: #1b1b1b !important;
+}
+
+/* link navbar */
+body.dark-mode .navbar a {
+  color: white !important;
+}
+
+body.dark-mode .navbar a:hover {
+  color: #ffd166 !important;
+}
+
+/* tombol utama */
+body.dark-mode .form-card button {
+  background: #6c63ff !important;
+  color: white !important;
+}
+
+/* tombol edit */
+body.dark-mode .btn-edit {
+  background: #3498db !important;
+}
+
+/* tombol hapus */
+body.dark-mode .btn-hapus {
+  background: #e74c3c !important;
+}
+/* ========= FIX DARK MODE ABOUT ========= */
+
+body.dark-mode.about-page {
+  background: #121212 !important;
+}
+
+/* card */
+body.dark-mode .about-card {
+  background: #1e1e1e !important;
+  color: white !important;
+}
+
+/* judul */
+body.dark-mode .about-card h2 {
+  color: white !important;
+}
+
+/* paragraf */
+body.dark-mode .about-card p {
+  color: #d6d6d6 !important;
+}
+
+/* navbar */
+body.dark-mode .navbar {
+  background: #1b1b1b !important;
+}
+
+/* link navbar */
+body.dark-mode .navbar a {
+  color: white !important;
+}
+
+body.dark-mode .navbar a:hover {
+  color: #ffd166 !important;
+}
+
+/* tombol */
+body.dark-mode .dark-btn {
+  background: #6c63ff !important;
+  color: white !important;
 }
