@@ -1,56 +1,108 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Buku</title>
+
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body class="dashboard">
+
+<body class="detail-page">
+
+    <!-- SIDEBAR -->
     <div class="sidebar">
-        <h2>Detail Buku</h2>
-        <a href="index.html">Home</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="add-book.html">Tambah Buku</a>
-        <a href="detail-book.html" class="active">Detail Buku</a>
-        <a href="about.html">Tentang</a>
-        <a href="login.html">Login</a>
+
+        <h1 class="logo">📚 MyLibrary</h1>
+
+        <a href="index.html" class="menu">
+            🏠 Home
+        </a>
+
+        <a href="dashboard.html" class="menu">
+            📖 Dashboard
+        </a>
+
+        <a href="add-book.html" class="menu">
+            ➕ Tambah Buku
+        </a>
+
+        <a href="detail-book.html" class="menu active">
+            ⭐ Detail
+        </a>
+
+        <a href="about.html" class="menu">
+            📚 About
+        </a>
+
+        <a href="login.html" class="menu">
+            ⚙️ Login
+        </a>
+
     </div>
 
-    <div class="main">
-        <div class="navbar">
-            <h3>Informasi Detail</h3>
-        </div>
-        <div class="card">
-            <h2>Detail Bacaan</h2>
-            <hr style="margin: 15px 0;">
-            <h2 id="detailJudul"></h2>
-            <p>
-                Progress Episode: <strong id="detailEpisode"></strong>
-            </p>
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
 
-            <p>
-                Penulis: <strong id="detailPenulis"></strong>
-            </p>
+        <div class="detail-container">
 
-            <p>
-                Tahun: <strong id="detailTahun"></strong>
-            </p>
+            <div class="detail-card">
 
-            <p>
-                Kategori: <strong id="detailKategori"></strong>
-            </p>
-            
-            <div class="aksi" style="margin: 20px 0;">
-                <button class="btn-edit" onclick="editProgressDetail()" style="padding: 8px 15px; background-color: #ffc107; border: none; cursor: pointer; margin-right: 10px;">Edit</button>
-                <button class="btn-hapus" onclick="hapusProgressDetail()" style="padding: 8px 15px; background-color: #dc3545; color: white; border: none; cursor: pointer;">Hapus</button>
+                <h2>Detail Bacaan</h2>
+
+                <hr>
+
+                <div class="detail-item">
+                    <span>📖 Judul</span>
+                    <strong id="detailJudul"></strong>
+                </div>
+
+                <div class="detail-item">
+                    <span>🎬 Progress Episode</span>
+                    <strong id="detailEpisode"></strong>
+                </div>
+
+                <div class="detail-item">
+                    <span>✍️ Penulis</span>
+                    <strong id="detailPenulis"></strong>
+                </div>
+
+                <div class="detail-item">
+                    <span>📅 Tahun</span>
+                    <strong id="detailTahun"></strong>
+                </div>
+
+                <div class="detail-item">
+                    <span>🏷️ Kategori</span>
+                    <strong id="detailKategori"></strong>
+                </div>
+
+                <!-- BUTTON -->
+                <div class="aksi">
+
+                    <button class="btn-edit" onclick="editProgressDetail()">
+                        Edit
+                    </button>
+
+                    <button class="btn-hapus" onclick="hapusProgressDetail()">
+                        Hapus
+                    </button>
+
+                </div>
+
+                <a href="dashboard.html" class="btn-kembali">
+                    ← Kembali ke Dashboard
+                </a>
+
             </div>
 
-            <br>
-            <a href="dashboard.html" class="btn" style="display:inline-block">Kembali ke Dashboard</a>
-            <br>
         </div>
+
     </div>
+
     <script src="assets/js/script.js"></script>
+
 </body>
+
 </html>
