@@ -8,7 +8,7 @@
 
 body {
   font-family: Arial, sans-serif;
-  background: #f5f5f5;
+  background: #6d7071;
   color: #222;
 }
 
@@ -24,8 +24,8 @@ button {
 /* ========= NAVBAR / SEMUA HALAMAN ========= */
 
 .navbar {
-  background: #2f2f2f;
-  color: white;
+  background: #6d7071;
+  color: #090450;
   padding: 18px 8%;
   display: flex;
   justify-content: space-between;
@@ -37,7 +37,7 @@ button {
 }
 
 .navbar a {
-  color: white;
+  color: #4b4c51;
   margin-left: 20px;
   font-weight: bold;
 }
@@ -228,7 +228,7 @@ button {
 
 body.login-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f6f3ee, #d8c3a5);
+  background: linear-gradient(135deg, #57595a, #6d7071);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -673,7 +673,7 @@ body.dashboard {
 /* ========= about.html ========= */
 
 .about-card {
-  background: white;
+  background: #6d7071;
   padding: 30px;
   border-radius: 18px;
   line-height: 1.8;
@@ -683,10 +683,11 @@ body.dashboard {
 .about-card p {
   margin-top: 15px;
 }
+
 /* ========= about.html ========= */
 
 body.about-page {
-  background: linear-gradient(135deg, #f6f3ee, #d8c3a5);
+  background: linear-gradient(135deg, #f6f3ee, #6d7071);
   min-height: 100vh;
 }
 
