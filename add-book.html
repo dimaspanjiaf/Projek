@@ -6,30 +6,29 @@
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="add-book">
-
-    <div class="navbar">
-        <h1>BookTracker</h1>
-
-        <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="dashboard.html">Dashboard</a>
-            <a href="add-book.html">Add Book</a>
-            <a href="about.html">About</a>
-        </div>
+    
+    <div class="sidebar">
+        <h2>Add Book</h2>
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="about.html">About</a>
     </div>
 
-    <div class="add-book-container">
-        <div class="form-card">
-            <h2>Add Book Progress</h2>
+    <div class="main">
+        <div class="add-book-container">
+            <div class="form-card">
+                <h2>Add Book Progress</h2>
 
-            <input type="text" id="judul" placeholder="Judul (film/novel/dll)">
-            <input type="number" id="episode" placeholder="Episode / Progress">
+                <input type="text" id="judul" placeholder="Judul (film/novel/dll)">
+                <input type="text" id="penulis" placeholder="Nama Penulis">
+                <input type="number" id="episode" placeholder="Episode / Progress">
 
-            <button onclick="tambahData()">
-                Simpan Progress
-            </button>
-            
+                <button onclick="tambahData()">
+                    Simpan Progress
+                </button>
+                
             </div>
+        </div>
     </div>
 
 <script src="assets/js/script.js"></script>

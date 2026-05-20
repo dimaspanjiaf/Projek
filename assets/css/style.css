@@ -863,78 +863,119 @@ body.dark-mode .dashboard .navbar h3 {
 
 
 body.add-book {
-  background: linear-gradient(135deg, #f6f3ee, #d8c3a5);
-  min-height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+}
+
+.add-book .sidebar {
+    width: 220px;
+    background: #2c3e50;
+    color: white;
+    height: 100vh;
+    padding: 20px;
+    position: fixed;
+}
+
+.add-book .sidebar h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.add-book .sidebar a {
+    display: block;
+    color: white;
+    padding: 12px;
+    text-decoration: none;
+    margin: 5px 0;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+.add-book .sidebar a:hover {
+    background: #34495e;
+    padding-left: 18px;
+}
+
+.add-book .sidebar a.active {
+    background: #1abc9c;
+}
+
+.add-book .main {
+    margin-left: 220px;
+    padding: 20px;
+    width: calc(100% - 220px);
 }
 
 /* container utama */
-.add-book-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 60px 20px;
+.add-book .add-book-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 60px);
+    padding: 20px;
 }
 
 /* card form */
 .add-book .form-card {
-  width: 100%;
-  max-width: 500px;
-  background: white;
-  padding: 35px;
-  border-radius: 22px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-  transition: 0.3s;
+    width: 100%;
+    max-width: 500px;
+    background: white;
+    padding: 35px;
+    border-radius: 22px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    transition: 0.3s;
 }
 
 .add-book .form-card:hover {
-  transform: translateY(-4px);
+    transform: translateY(-4px);
 }
 
 .add-book .form-card h2 {
-  text-align: center;
-  margin-bottom: 25px;
-  color: #222;
-  font-size: 30px;
+    text-align: center;
+    margin-bottom: 25px;
+    color: #222;
+    font-size: 30px;
 }
 
 /* input */
 .add-book .form-card input,
 .add-book .form-card select {
-  width: 100%;
-  padding: 14px 16px;
-  margin: 12px 0;
-  border-radius: 12px;
-  border: 1px solid #ccc;
-  background: #f9f9f9;
-  transition: 0.3s;
-  font-size: 15px;
+    width: 100%;
+    padding: 14px 16px;
+    margin: 12px 0;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    background: #f9f9f9;
+    transition: 0.3s;
+    font-size: 15px;
 }
 
 .add-book .form-card input:focus,
 .add-book .form-card select:focus {
-  border-color: #6c63ff;
-  background: white;
-  outline: none;
-  box-shadow: 0 0 8px rgba(108, 99, 255, 0.2);
+    border-color: #6c63ff;
+    background: white;
+    outline: none;
+    box-shadow: 0 0 8px rgba(108, 99, 255, 0.2);
 }
 
 /* tombol */
 .add-book .form-card button {
-  width: 100%;
-  padding: 14px;
-  margin-top: 15px;
-  border: none;
-  border-radius: 14px;
-  background: #6c63ff;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  transition: 0.3s;
+    width: 100%;
+    padding: 14px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 14px;
+    background: #6c63ff;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.3s;
 }
 
 .add-book .form-card button:hover {
-  background: #5148d9;
-  transform: scale(1.02);
+    background: #5148d9;
+    transform: scale(1.02);
 }
 
 /* list hasil */
@@ -977,25 +1018,31 @@ body.add-book {
 
 /* responsive */
 @media (max-width: 768px) {
+    .add-book .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 15px;
+    }
 
-  .add-book-container {
-    padding: 30px 15px;
-  }
+    .add-book .main {
+        margin-left: 0;
+        width: 100%;
+    }
 
-  .add-book .form-card {
-    padding: 25px;
-  }
+    .add-book-container {
+        padding: 15px;
+    }
 
-  .add-book .form-card h2 {
-    font-size: 24px;
-  }
+    .add-book .form-card {
+        padding: 25px;
+    }
 
-  .add-book .nav-links {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
+    .add-book .form-card h2 {
+        font-size: 24px;
+    }
 }
+
 /* tombol aksi */
 .add-book .aksi {
   display: flex;
