@@ -91,6 +91,36 @@ function login() {
   }
 }
 
+    function toggleDark() {
+      document.body.classList.toggle('dark');
+    }
+
+    const genreChart = new Chart(document.getElementById('genreChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Programming', 'Novel', 'History', 'Self Improvement'],
+        datasets: [{
+          data: [35, 25, 15, 25],
+          backgroundColor: ['#6b7280', '#9ca3af', '#4b5563', '#d1d5db']
+        }]
+      }
+    });
+
+    const progressChart = new Chart(document.getElementById('progressChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
+        datasets: [{
+          label: 'Buku Dibaca',
+          data: [2, 5, 3, 6, 4, 8],
+          backgroundColor: '#6b7280',
+          borderRadius: 10
+        }]
+      },
+      options: {
+        responsive: true
+      }
+    });
 
 // ========= dashboard.html =========
 if (document.body.classList.contains("dashboard")) {

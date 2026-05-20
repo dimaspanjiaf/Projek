@@ -5,32 +5,66 @@
     <title>Tambah Buku</title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
+
 <body class="add-book">
-    
+
+    <!-- SIDEBAR -->
     <div class="sidebar">
-        <h2>Add Book</h2>
-        <a href="index.html">Home</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="about.html">About</a>
+
+        <h1 class="logo">📚 MyLibrary</h1>
+
+        <a href="about.html" class="menu">
+            🏠 Home
+        </a>
+
+        <a href="dashboard.html" class="menu">
+            📖 Dashboard
+        </a>
+
+        <a href="add-book.html" class="menu active">
+            ➕ Tambah Buku
+        </a>
+
+        <a href="detail-book.html" class="menu">
+            ⭐ Detail
+        </a>
+
+        <a href="index.html" class="menu">
+            📊 About
+        </a>
+
+        <a href="login.html" class="menu">
+            ⚙️ Login
+        </a>
+
     </div>
 
+    <!-- MAIN CONTENT -->
     <div class="main">
+
         <div class="add-book-container">
+
             <div class="form-card">
+
                 <h2>Add Book Progress</h2>
 
-                <input type="text" id="judul" placeholder="Judul (film/novel/dll)">
+                <input type="text" id="judul" placeholder="Judul Buku">
+
                 <input type="text" id="penulis" placeholder="Nama Penulis">
+
                 <input type="number" id="episode" placeholder="Episode / Progress">
 
                 <button onclick="tambahData()">
                     Simpan Progress
                 </button>
-                
+
             </div>
+
         </div>
+
     </div>
 
 <script src="assets/js/script.js"></script>
+
 </body>
 </html>

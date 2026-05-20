@@ -1,71 +1,234 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <title>Dashboard Buku</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perpustakaan Pribadi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body class="dashboard">
+<body>
 
+    <!-- SIDEBAR -->
     <div class="sidebar">
-        <h2>Dashboard</h2>
-        <a href="index.html">Home</a>
-        <a href="dashboard.html" class="active">Dashboard</a>
-        <a href="add-book.html">Tambah Buku</a>
-        <a href="detail-book.html">Detail Buku</a>
-        <a href="about.html">Tentang</a>
+
+        <h1 class="logo">📚 MyLibrary</h1>
+
+        <a href="about.html" class="menu">
+            🏠 Home
+        </a>
+
+        <a href="dashboard.html" class="menu active">
+            📖 Dashboard
+        </a>
+
+        <a href="add-book.html" class="menu">
+            ➕ Tambah Buku
+        </a>
+
+        <a href="detail-book.html" class="menu">
+            ⭐ Detail
+        </a>
+
+        <a href="index.html" class="menu">
+            📊 About
+        </a>
+
+        <a href="login.html" class="menu">
+            ⚙️ Login
+        </a>
+
     </div>
 
+  <div class="main">
 
-    <div class="main">
+    <div class="topbar">
+      <div>
+        <h2>Selamat Datang 👋</h2>
+        <p>Kelola perpustakaan pribadimu dengan lebih modern.</p>
+      </div>
 
-        <div class="navbar">
-            <h3>Selamat Datang di Dashboard Buku</h3>
-            <button class="dark-btn" onclick="toggleDarkMode()">
-                🌙 Dark Mode
-            </button>
-        </div>
+      <button class="dark-btn" onclick="toggleDark()">🌙 Dark Mode</button>
+    </div>
 
-        <div id="undo-box"></div>
-        
-        <div class="cards">
-            <div class="card">
-            <h3 id="total-buku">0</h3>
-            <p>Total Buku</p>
-        </div>
-        <div class="card">
-            <h3 id="total-kategori">0</h3>
-            <p>Kategori</p>
-            </div>
-        <div class="card">
-            <h3 id="total-user">0</h3>
-            <p>User</p>
-            </div>
-        </div>
+    <div class="cards">
+      <div class="card green">
+        <h1>128</h1>
+        <p>Total Buku</p>
+      </div>
 
-        <h3>Daftar Buku</h3>
-        <div class="search-box">
-            <input
-                type="text"
-                id="searchInput"
-                placeholder="Cari judul buku..."
-                onkeyup="searchBuku()"
-            >
-        </div>
-        <table id="tabel-buku" border="1" cellpadding="10" cellspacing="0">
+      <div class="card blue">
+        <h1>34</h1>
+        <p>Sudah Dibaca</p>
+      </div>
+
+      <div class="card orange">
+        <h1>12</h1>
+        <p>Sedang Dibaca</p>
+      </div>
+
+      <div class="card pink">
+        <h1>18</h1>
+        <p>Wishlist</p>
+      </div>
+    </div>
+
+    <div class="table-section">
+      <div class="section-title">
+        <h2>Daftar Buku</h2>
+      </div>
+
+      <input type="text" class="search-box" placeholder="🔍 Cari judul buku...">
+
+      <table>
         <thead>
-        <tr>
-            <th>No</th>
-            <th>Judul</th>
+          <tr>
+            <th>Buku</th>
             <th>Penulis</th>
-            <th>Episode</th>
+            <th>Tahun</th>
+            <th>Status</th>
+            <th>Progress</th>
             <th>Aksi</th>
-        </tr>
+          </tr>
         </thead>
-        <tbody id="data-buku">
+
+        <tbody>
+          <tr>
+            <td>
+              <div class="book">
+                <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=400&auto=format&fit=crop" alt="">
+                <div>
+                  <strong>Atomic Habits</strong>
+                  <p>Self Improvement</p>
+                </div>
+              </div>
+            </td>
+            <td>James Clear</td>
+            <td>2018</td>
+            <td><span class="badge reading">Sedang Dibaca</span></td>
+            <td>
+              <div class="progress-wrap">
+                80%
+                <div class="progress-bar">
+                  <div class="progress" style="width:80%"></div>
+                </div>
+              </div>
+            </td>
+            <td class="actions">
+              <button>✏️</button>
+              <button>🗑️</button>
+              <button>⭐</button>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <div class="book">
+                <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=400&auto=format&fit=crop" alt="">
+                <div>
+                  <strong>Deep Work</strong>
+                  <p>Productivity</p>
+                </div>
+              </div>
+            </td>
+            <td>Cal Newport</td>
+            <td>2016</td>
+            <td><span class="badge done">Selesai</span></td>
+            <td>
+              <div class="progress-wrap">
+                100%
+                <div class="progress-bar">
+                  <div class="progress" style="width:100%"></div>
+                </div>
+              </div>
+            </td>
+            <td class="actions">
+              <button>✏️</button>
+              <button>🗑️</button>
+              <button>⭐</button>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <div class="book">
+                <img src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d?q=80&w=400&auto=format&fit=crop" alt="">
+                <div>
+                  <strong>Clean Code</strong>
+                  <p>Programming</p>
+                </div>
+              </div>
+            </td>
+            <td>Robert C. Martin</td>
+            <td>2008</td>
+            <td><span class="badge wishlist">Wishlist</span></td>
+            <td>
+              <div class="progress-wrap">
+                0%
+                <div class="progress-bar">
+                  <div class="progress" style="width:0%"></div>
+                </div>
+              </div>
+            </td>
+            <td class="actions">
+              <button>✏️</button>
+              <button>🗑️</button>
+              <button>⭐</button>
+            </td>
+          </tr>
         </tbody>
-        </table>
+      </table>
     </div>
-<script src="assets/js/script.js"></script>
+
+    <div class="charts">
+      <div class="chart-box">
+        <h3 style="margin-bottom:20px;">Genre Favorit</h3>
+        <canvas id="genreChart"></canvas>
+      </div>
+
+      <div class="chart-box">
+        <h3 style="margin-bottom:20px;">Progress Membaca</h3>
+        <canvas id="progressChart"></canvas>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function toggleDark() {
+      document.body.classList.toggle('dark');
+    }
+
+    const genreChart = new Chart(document.getElementById('genreChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Programming', 'Novel', 'History', 'Self Improvement'],
+        datasets: [{
+          data: [35, 25, 15, 25],
+          backgroundColor: ['#6b7280', '#9ca3af', '#4b5563', '#d1d5db']
+        }]
+      }
+    });
+
+    const progressChart = new Chart(document.getElementById('progressChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
+        datasets: [{
+          label: 'Buku Dibaca',
+          data: [2, 5, 3, 6, 4, 8],
+          backgroundColor: '#6b7280',
+          borderRadius: 10
+        }]
+      },
+      options: {
+        responsive: true
+      }
+    });
+  </script>
+
 </body>
 </html>
