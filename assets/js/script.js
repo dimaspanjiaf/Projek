@@ -456,3 +456,33 @@ function hapusProgressDetail() {
     window.location.href = "dashboard.html"; // Redirect ke dashboard setelah hapus
   }
 }
+function toggleDarkMode() {
+  document.body.classList.toggle("dark-mode");
+
+  // simpan pilihan user
+  if (document.body.classList.contains("dark-mode")) {
+    localStorage.setItem("theme", "dark");
+  } else {
+    localStorage.setItem("theme", "light");
+  }
+}
+window.addEventListener("DOMContentLoaded", function () {
+  const theme = localStorage.getItem("theme");
+
+  if (theme === "dark") {
+    document.body.classList.add("dark-mode");
+  }
+});   
+function toggleDarkMode() {
+  document.body.classList.toggle("dark-mode");
+
+  const btn = document.querySelector(".dark-btn");
+
+  if (document.body.classList.contains("dark-mode")) {
+    btn.innerHTML = "☀️ Light Mode";
+    localStorage.setItem("theme", "dark");
+  } else {
+    btn.innerHTML = "🌙 Dark Mode";
+    localStorage.setItem("theme", "light");
+  }
+}
