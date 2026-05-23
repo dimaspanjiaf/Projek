@@ -91,270 +91,309 @@ function login() {
   }
 }
 
-    function toggleDark() {
-      document.body.classList.toggle('dark');
-    }
 
-    const genreChart = new Chart(document.getElementById('genreChart'), {
-      type: 'doughnut',
-      data: {
-        labels: ['Programming', 'Novel', 'History', 'Self Improvement'],
-        datasets: [{
-          data: [35, 25, 15, 25],
-          backgroundColor: ['#6b7280', '#9ca3af', '#4b5563', '#d1d5db']
-        }]
-      }
-    });
 
-    const progressChart = new Chart(document.getElementById('progressChart'), {
-      type: 'bar',
-      data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
-        datasets: [{
-          label: 'Buku Dibaca',
-          data: [2, 5, 3, 6, 4, 8],
-          backgroundColor: '#6b7280',
-          borderRadius: 10
-        }]
-      },
-      options: {
-        responsive: true
-      }
-    });
+// ================= DASHBOARD =================
 
-// ========= dashboard.html =========
-if (document.body.classList.contains("dashboard")) {
+if (document.body.classList.contains("dashboard-page")) {
 
-let dataTerhapus = null;
-let buku = JSON.parse(localStorage.getItem("buku")) || [];
+  let buku = JSON.parse(localStorage.getItem("buku")) || [];
 
-const tbody = document.getElementById("data-buku");
+  const tbody = document.getElementById("data-buku");
 
-// ================= TAMPILKAN BUKU =================
-function tampilkanBuku(data = buku) {
+  function tampilkanBuku(data = buku) {
 
     tbody.innerHTML = "";
 
+    if (data.length === 0) {
+
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="5" style="text-align:center;">
+            Belum ada buku ditambahkan
+          </td>
+        </tr>
+      `;
+
+      return;
+    }
+
     data.forEach((item, index) => {
 
-        const row = `
-            <tr>
-                <td>${index + 1}</td>
-                <td>${item.judul}</td>
-                <td>${item.penulis}</td>
-                <td>${item.tahun}</td>
+      tbody.innerHTML += `
+      
+      <tr>
 
-                <td>
-                    <div class="aksi">
+        <td>
+          <strong>${item.judul}</strong>
+        </td>
 
-                        <a href="detail-book.html?id=${index}" class="btn-detail">
-                            Detail
-                        </a>
+        <td>${item.penulis}</td>
 
-                        <button onclick="hapusBuku(${index})" class="btn-hapus">
-                            Hapus
-                        </button>
+        <td>
+          <span class="badge reading">
+            ${item.status}
+          </span>
+        </td>
 
-                    </div>
-                </td>
-            </tr>
-        `;
+        <td>
 
-        tbody.innerHTML += row;
+          <div class="progress-wrap">
+
+            ${item.progress}%
+
+            <div class="progress-bar">
+
+              <div 
+                class="progress"
+                style="width:${item.progress}%">
+              </div>
+
+            </div>
+
+          </div>
+
+        </td>
+
+        <td class="actions">
+
+          <button onclick="hapusBuku(${index})">
+            🗑️
+          </button>
+
+        </td>
+
+      </tr>
+
+      `;
     });
 
-    updateDashboard();
-}
+    updateCard();
+    renderChart();
+  }
 
-// ================= UPDATE CARD =================
-function updateDashboard() {
+  // ================= UPDATE CARD =================
 
-    // Total Buku
-    document.getElementById("total-buku").innerText = buku.length;
+  function updateCard() {
 
-    // Total Kategori
-    const kategoriUnik = [
-        ...new Set(buku.map(item => item.kategori))
-    ];
+    document.getElementById("totalBuku").innerText =
+      buku.length;
 
-    document.getElementById("total-kategori").innerText =
-        kategoriUnik.length;
+    const selesai =
+      buku.filter(item => item.status === "Selesai").length;
 
-    // Total User
-    document.getElementById("total-user").innerText = 30;
-}
+    const dibaca =
+      buku.filter(item => item.status === "Sedang Dibaca").length;
 
-// ================= HAPUS =================
-function hapusBuku(index) {
+    const wishlist =
+      buku.filter(item => item.status === "Wishlist").length;
 
-    let yakin = confirm("Yakin ingin menghapus buku?");
+    document.getElementById("selesaiBuku").innerText =
+      selesai;
+
+    document.getElementById("dibacaBuku").innerText =
+      dibaca;
+
+    document.getElementById("wishlistBuku").innerText =
+      wishlist;
+  }
+
+  // ================= HAPUS =================
+
+  function hapusBuku(index) {
+
+    const yakin = confirm(
+      "Yakin ingin menghapus buku?"
+    );
 
     if (yakin) {
 
-        // Simpan data sementara
-        dataTerhapus = {
-            data: buku[index],
-            index: index
-        };
+      buku.splice(index, 1);
 
-        // Hapus data
-        buku.splice(index, 1);
+      localStorage.setItem(
+        "buku",
+        JSON.stringify(buku)
+      );
 
-        // Update localStorage
-        localStorage.setItem("buku", JSON.stringify(buku));
-
-        // Render ulang
-        tampilkanBuku();
-
-        // Tampilkan undo
-        tampilkanUndo();
+      tampilkanBuku();
     }
-}
-
-// ================= UNDO =================
-function undoHapus() {
-
-    if (dataTerhapus !== null) {
-
-        buku.splice(
-            dataTerhapus.index,
-            0,
-            dataTerhapus.data
-        );
-
-        localStorage.setItem("buku", JSON.stringify(buku));
-
-        tampilkanBuku();
-
-        document.getElementById("undo-box").innerHTML = "";
-
-        dataTerhapus = null;
-    }
-}
-
-// ================= TAMPILKAN UNDO =================
-function tampilkanUndo() {
-
-    const undoBox = document.getElementById("undo-box");
-
-    undoBox.innerHTML = `
-        <div class="undo-alert">
-            Buku berhasil dihapus
-
-            <button onclick="undoHapus()" class="btn-undo">
-                Undo
-            </button>
-        </div>
-    `;
-}
-
-// ========= DARK MODE =========
-
-function toggleDarkMode() {
-  const body = document.body;
-  body.classList.toggle("dark-mode");
-
-  if (body.classList.contains("dark-mode")) {
-    localStorage.setItem("darkMode", "enabled");
-  } else {
-    localStorage.setItem("darkMode", "disabled");
   }
-}
 
+  window.hapusBuku = hapusBuku;
 
-// ========= LOAD DARK MODE =========
+  // ================= SEARCH =================
 
-window.addEventListener("DOMContentLoaded", function () {
-  const darkMode = localStorage.getItem("darkMode");
-  if (darkMode === "enabled") {
-    document.body.classList.add("dark-mode");
+  function searchBuku() {
+
+    const keyword =
+      document.getElementById("searchInput")
+      .value
+      .toLowerCase();
+
+    const hasil = buku.filter(item =>
+      item.judul.toLowerCase().includes(keyword)
+    );
+
+    tampilkanBuku(hasil);
   }
-});
 
-window.addEventListener("load", function() {
-  if (localStorage.getItem("darkMode") === "enabled") {
-    document.body.classList.add("dark-mode");
+  window.searchBuku = searchBuku;
+
+  // ================= CHART =================
+
+  function renderChart() {
+
+    const selesai =
+      buku.filter(item => item.status === "Selesai").length;
+
+    const dibaca =
+      buku.filter(item => item.status === "Sedang Dibaca").length;
+
+    const wishlist =
+      buku.filter(item => item.status === "Wishlist").length;
+
+    // Doughnut
+    new Chart(document.getElementById("genreChart"), {
+
+      type: "doughnut",
+
+      data: {
+
+        labels: [
+          "Selesai",
+          "Sedang Dibaca",
+          "Wishlist"
+        ],
+
+        datasets: [{
+          data: [
+            selesai,
+            dibaca,
+            wishlist
+          ],
+
+          backgroundColor: [
+            "#4b5563",
+            "#6b7280",
+            "#9ca3af"
+          ]
+        }]
+      }
+    });
+
+    // Bar
+    new Chart(document.getElementById("progressChart"), {
+
+      type: "bar",
+
+      data: {
+
+        labels: buku.map(item => item.judul),
+
+        datasets: [{
+
+          label: "Progress",
+
+          data: buku.map(item => item.progress),
+
+          backgroundColor: "#6b7280",
+
+          borderRadius: 10
+        }]
+      }
+    });
   }
-});
 
-
-// ========= SEARCH BUKU =========
-
-function searchBuku() {
-  const input = document.getElementById("searchInput");
-  const filter = input.value.toLowerCase();
-  const rows = document.querySelectorAll("#data-buku tr");
-
-  rows.forEach(function(row) {
-    const text = row.innerText.toLowerCase();
-    if (text.includes(filter)) {
-      row.style.display = "";
-    } else {
-      row.style.display = "none";
-    }
-  });
+  tampilkanBuku();
 }
 
 
-// ========= SHOW PASSWORD =========
 
-function togglePassword(id, element) {
-  const input = document.getElementById(id);
-  if (input.type === "password") {
-    input.type = "text";
-    element.innerText = "🙈";
-  } else {
-    input.type = "password";
-    element.innerText = "👁";
-  }
-}
+// =========================
+// ADD BOOK
+// =========================
 
-// ========= LOAD DATA =========
-tampilkanBuku();
-}
+const judulInput =
+  document.getElementById("judul");
 
+const penulisInput =
+  document.getElementById("penulis");
 
-// ========= add-book.html =========
+const episodeInput =
+  document.getElementById("episode");
 
-let buku = JSON.parse(localStorage.getItem("buku")) || [];
+const genreInput =
+  document.getElementById("genre");
 
-const judulInput = document.getElementById("judul");
-const penulisInput = document.getElementById("penulis");
-const episodeInput = document.getElementById("episode");
+const kategoriInput =
+  document.getElementById("kategori");
 
+const progressInput =
+  document.getElementById("progress");
 
-// ========= TAMBAH DATA =========
+// =========================
+// TAMBAH DATA
+// =========================
 
 function tambahData() {
 
-    if (
-        judulInput.value.trim() === "" ||
-        penulisInput.value.trim() === "" ||
-        episodeInput.value.trim() === ""
-    ) {
-        alert("Semua input harus diisi!");
-        return;
-    }
+  const buku =
+    JSON.parse(localStorage.getItem("buku")) || [];
 
-    const dataBaru = {
-        judul: judulInput.value,
-        penulis: penulisInput.value,
-        tahun: episodeInput.value,
-        kategori: "Progress"
-    };
+  if (
 
-    buku.push(dataBaru);
+    judulInput.value.trim() === "" ||
+    penulisInput.value.trim() === "" ||
+    episodeInput.value.trim() === "" ||
+    genreInput.value.trim() === "" ||
+    kategoriInput.value.trim() === "" ||
+    progressInput.value.trim() === ""
 
-    localStorage.setItem("buku", JSON.stringify(buku));
+  ) {
 
-    alert("Buku berhasil ditambahkan!");
+    alert("Semua input wajib diisi!");
 
-    window.location.href = "dashboard.html";
+    return;
+  }
+
+const dataBaru = {
+
+  judul:
+    judulInput.value,
+
+  penulis:
+    penulisInput.value,
+
+  episode:
+    episodeInput.value,
+
+  genre:
+    genreInput.value,
+
+  status:
+    kategoriInput.value,
+
+  progress:
+    Number(progressInput.value)
+};
+  buku.push(dataBaru);
+
+  localStorage.setItem(
+    "buku",
+    JSON.stringify(buku)
+  );
+
+  alert("Buku berhasil ditambahkan!");
+
+  window.location.href =
+    "dashboard.html";
 }
 
-// ========= GLOBAL FUNCTION =========
+// GLOBAL
 window.tambahData = tambahData;
 
+const buku =
+  JSON.parse(localStorage.getItem("buku")) || [];
 
 
 // ========= DETAIL BOOK =========
@@ -374,8 +413,8 @@ if (detailIndex !== null && detailJudul && detailEpisode) {
     detailJudul.innerText = dataAktif.judul;
     detailEpisode.innerText = dataAktif.tahun;
     detailPenulis.innerText = dataAktif.penulis;
-    detailTahun.innerText = dataAktif.tahun;
-    detailKategori.innerText = dataAktif.kategori;
+    detailTahun.innerText = dataAktif.progress + "%";
+    detailKategori.innerText = dataAktif.status;
   } else {
     detailJudul.innerText = "Data tidak ditemukan";
     detailEpisode.innerText = "-";
@@ -394,11 +433,8 @@ function editProgressDetail() {
     return;
   }
 
-  buku[detailIndex] = {
-    judul: judulBaru,
-    episode: episodeBaru
-  };
-
+ buku[detailIndex].judul = judulBaru;
+buku[detailIndex].episode = episodeBaru;
   localStorage.setItem("buku", JSON.stringify(buku));
   
   // Update tampilan langsung di web luar tanpa reload penuh
@@ -413,10 +449,40 @@ function hapusProgressDetail() {
   const yakin = confirm("Yakin ingin menghapus progress ini?");
   if (yakin) {
     buku.splice(detailIndex, 1);
-    localStorage.setItem("progressBuku", JSON.stringify(progressBuku));
+   localStorage.setItem("buku", JSON.stringify(buku));
     localStorage.removeItem("detailBukuIndex"); // hapus tracker index aktif
     
     alert("Data berhasil dihapus!");
     window.location.href = "dashboard.html"; // Redirect ke dashboard setelah hapus
+  }
+}
+function toggleDarkMode() {
+  document.body.classList.toggle("dark-mode");
+
+  // simpan pilihan user
+  if (document.body.classList.contains("dark-mode")) {
+    localStorage.setItem("theme", "dark");
+  } else {
+    localStorage.setItem("theme", "light");
+  }
+}
+window.addEventListener("DOMContentLoaded", function () {
+  const theme = localStorage.getItem("theme");
+
+  if (theme === "dark") {
+    document.body.classList.add("dark-mode");
+  }
+});   
+function toggleDarkMode() {
+  document.body.classList.toggle("dark-mode");
+
+  const btn = document.querySelector(".dark-btn");
+
+  if (document.body.classList.contains("dark-mode")) {
+    btn.innerHTML = "☀️ Light Mode";
+    localStorage.setItem("theme", "dark");
+  } else {
+    btn.innerHTML = "🌙 Dark Mode";
+    localStorage.setItem("theme", "light");
   }
 }
