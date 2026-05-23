@@ -3,10 +3,18 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>Tambah Buku</title>
 
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link
+        rel="stylesheet"
+        href="assets/css/style.css"
+    >
 </head>
 
 <body class="add-book-page">
@@ -14,7 +22,9 @@
     <!-- SIDEBAR -->
     <div class="sidebar">
 
-        <h1 class="logo">📚 MyLibrary</h1>
+        <h1 class="logo">
+            📚 MyLibrary
+        </h1>
 
         <a href="index.html" class="menu">
             🏠 Home
@@ -24,12 +34,11 @@
             📖 Dashboard
         </a>
 
-        <a href="add-book.html" class="menu active">
+        <a
+            href="add-book.html"
+            class="menu active"
+        >
             ➕ Tambah Buku
-        </a>
-
-        <a href="detail-book.html" class="menu">
-            ⭐ Detail
         </a>
 
         <a href="about.html" class="menu">
@@ -39,6 +48,13 @@
         <a href="login.html" class="menu">
             ⚙️ Login
         </a>
+
+        <button
+            class="dark-btn"
+            onclick="toggleDarkMode()"
+        >
+            🌙 Dark Mode
+        </button>
 
     </div>
 
@@ -51,12 +67,65 @@
 
                 <h2>Add Book Progress</h2>
 
-                <input type="text" id="judul" placeholder="Judul Buku">
+                <!-- JUDUL -->
+                <input
+                    type="text"
+                    id="judul"
+                    placeholder="Judul Buku"
+                >
 
-                <input type="text" id="penulis" placeholder="Nama Penulis">
+                <!-- PENULIS -->
+                <input
+                    type="text"
+                    id="penulis"
+                    placeholder="Nama Penulis"
+                >
 
-                <input type="number" id="episode" placeholder="Episode / Progress">
+                <!-- EPISODE -->
+                <input
+                    type="number"
+                    id="episode"
+                    placeholder="Episode / Chapter"
+                >
 
+                <!-- GENRE -->
+                <input
+                    type="text"
+                    id="genre"
+                    placeholder="Genre Buku"
+                >
+
+                <!-- STATUS -->
+                <select id="kategori">
+
+                    <option value="">
+                        Pilih Status Bacaan
+                    </option>
+
+                    <option value="Sedang Dibaca">
+                        Sedang Dibaca
+                    </option>
+
+                    <option value="Selesai">
+                        Selesai
+                    </option>
+
+                    <option value="Wishlist">
+                        Wishlist
+                    </option>
+
+                </select>
+
+                <!-- PROGRESS -->
+                <input
+                    type="number"
+                    id="progress"
+                    placeholder="Progress (%)"
+                    min="0"
+                    max="100"
+                >
+
+                <!-- BUTTON -->
                 <button onclick="tambahData()">
                     Simpan Progress
                 </button>
@@ -67,6 +136,7 @@
 
     </div>
 
+    <!-- JS -->
     <script src="assets/js/script.js"></script>
 
 </body>

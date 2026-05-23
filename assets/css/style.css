@@ -483,10 +483,6 @@ body {
   transition: 0.3s ease;
 }
 
-body.dark {
-  background: #0f172a;
-  color: white;
-}
 
 .sidebar {
   width: 260px;
@@ -794,6 +790,34 @@ tr:hover {
 
 .form-card button:hover {
   background: #6d7071;
+}
+  /* SELECT */
+
+.form-card select {
+
+  width: 100%;
+  padding: 15px;
+
+  margin-bottom: 18px;
+
+  border: 1px solid #dcdcdc;
+  border-radius: 12px;
+
+  font-size: 16px;
+
+  outline: none;
+
+  background: white;
+
+  transition: 0.3s;
+}
+
+.form-card select:focus {
+
+  border-color: #18243d;
+
+  box-shadow:
+    0 0 5px rgba(24,36,61,0.2);
 }
 
 
@@ -1421,4 +1445,153 @@ body.dark-mode .navbar a:hover {
 body.dark-mode .dark-btn {
   background: #6c63ff !important;
   color: white !important;
+}
+  /* =================================
+   FINAL UNIVERSAL DARK MODE FIX
+================================= */
+
+body.dark-mode {
+  background: #121212 !important;
+  color: white !important;
+}
+
+/* semua halaman */
+
+body.dark-mode.login-page,
+body.dark-mode.about-page,
+body.dark-mode.add-book-page,
+body.dark-mode.detail-page,
+body.dark-mode {
+  background: #121212 !important;
+  color: white !important;
+}
+
+/* container */
+
+body.dark-mode .topbar,
+body.dark-mode .card,
+body.dark-mode .table-section,
+body.dark-mode .chart-box,
+body.dark-mode .form-card,
+body.dark-mode .about-card,
+body.dark-mode .detail-card,
+body.dark-mode .hero,
+body.dark-mode .auth-container,
+body.dark-mode .toggle-panel {
+  background: #1e1e1e !important;
+  color: white !important;
+}
+
+/* sidebar */
+
+body.dark-mode .sidebar {
+  background: #111827 !important;
+}
+
+/* navbar */
+
+body.dark-mode .navbar {
+  background: #1b1b1b !important;
+}
+
+body.dark-mode .navbar a {
+  color: white !important;
+}
+
+body.dark-mode .navbar a:hover {
+  color: #ffd166 !important;
+}
+
+/* text */
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode p,
+body.dark-mode span,
+body.dark-mode label,
+body.dark-mode strong {
+  color: white !important;
+}
+
+/* input */
+
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+  background: #2a2a2a !important;
+  color: white !important;
+  border: 1px solid #444 !important;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+  color: #aaa !important;
+}
+
+/* table */
+
+body.dark-mode table {
+  background: #1e1e1e !important;
+}
+
+body.dark-mode th {
+  background: #374151 !important;
+  color: white !important;
+}
+
+body.dark-mode td {
+  border-color: #333 !important;
+  color: white !important;
+}
+
+/* button */
+
+body.dark-mode button,
+body.dark-mode .btn,
+body.dark-mode .dark-btn {
+  background: #6c63ff !important;
+  color: white !important;
+}
+
+/* progress */
+
+body.dark-mode .progress-bar {
+  background: #333 !important;
+}
+
+/* login page */
+
+body.dark-mode .form-box {
+  background: #1e1e1e !important;
+}
+
+body.dark-mode .form-box input {
+  background: #2a2a2a !important;
+  color: white !important;
+}
+
+/* cards */
+
+body.dark-mode .card {
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4) !important;
+}
+
+/* hover */
+
+body.dark-mode .menu:hover,
+body.dark-mode .menu.active {
+  background: #374151 !important;
+}
+.sidebar .dark-btn{
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background: #6c63ff;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
 }
