@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Reminder</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+        <!-- SIDEBAR -->
+    <div class="sidebar">
+
+        <h1 class="logo">📚 MyLibrary</h1>
+
+        <a href="index.html" class="menu">
+            Home
+        </a>
+
+        <a href="dashboard.html" class="menu">
+            Dashboard
+        </a>
+
+        <a href="add-book.html" class="menu">
+            Tambah Buku
+        </a>
+
+        <a href="detail-book.html" class="menu">
+            Detail Buku
+        </a>
+
+        <a href="about.html" class="menu">
+            About
+        </a>
+
+        <a href="login.html" class="menu active">
+            Login
+        </a>
+        <button class="dark-btn" onclick="toggleDarkMode()">
+      🌙 Dark Mode
+    </button>
+    </div>
+
+<body class="login-page">
+
+<div class="auth-container" id="authContainer">
+
+    <div class="form-box sign-up">
+    <form>
+        <h1>Create Account</h1>
+        <input type="text" id="regName" placeholder="Nama">
+        <input type="email" id="regEmail" placeholder="Email">
+        <div class="password-box">
+            <input
+                type="password"
+                id="regPass"
+                placeholder="Masukkan password"
+            >
+
+            <span onclick="togglePassword('regPass', this)">
+                👁
+            </span>
+        </div>
+        <button type="button" onclick="register()">Sign Up</button>
+        <p id="registerMsg" class="message"></p>
+    </form>
+    </div>
+
+    <div class="form-box sign-in">
+    <form>
+        <h1>Sign In</h1>
+        <input type="email" id="loginEmail" placeholder="Email">
+        <div class="password-box">
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Masukkan password"
+            >
+
+            <span onclick="togglePassword('loginPassword', this)">
+                👁
+            </span>
+        </div>
+        <button type="button" onclick="login()">Sign In</button>
+        <p id="loginMsg" class="message"></p>
+    </form>
+    </div>
+
+    <div class="toggle-box">
+      <div class="toggle-panel toggle-left">
+        <h1>Welcome Back!</h1>
+        <p>Sudah punya akun? Login untuk melihat riwayat bacaanmu.</p>
+        <button type="button" onclick="showLogin()">Sign In</button>
+      </div>
+
+      <div class="toggle-panel toggle-right">
+        <h1>Hello, Reader!</h1>
+        <p>Belum punya akun? Daftar dan mulai catat bacaanmu.</p>
+        <button type="button" onclick="showRegister()">Sign Up</button>
+      </div>
+    </div>
+
+  </div>
+
+<script src="assets/js/script.js"></script>
+</body>
+</html>
