@@ -520,6 +520,13 @@ body.login-page {
 }
 
 
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+.password-box span {
+  user-select: none;
+}
 /* ========= dashboard.html ========= */
 
 * {

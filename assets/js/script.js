@@ -91,6 +91,21 @@ function login() {
   }
 }
 
+//  Hide Password
+function togglePassword(inputId, element) {
+  const passwordInput = document.getElementById(inputId);
+  
+  if (passwordInput) {
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      element.innerText = "🙈"; 
+    } else {
+      passwordInput.type = "password";
+      element.innerText = "👁"; // 
+    }
+  }
+}
+window.togglePassword = togglePassword;
 
 
 // ================= DASHBOARD =================
