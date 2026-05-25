@@ -172,20 +172,18 @@ if (document.body.classList.contains("dashboard-page")) {
 
         </td>
 
-        <td class="actions">
+<td class="actions">
+          <button
+            class="btn-detail"
+            onclick="detailBuku(${item.originalIndex !== undefined ? item.originalIndex : index})">
+            Detail
+          </button>
 
-        <button
-          class="btn-detail"
-          onclick="detailBuku(${index})">
-          Detail
-        </button>
-
-        <button
-          class="btn-delete"
-          onclick="hapusBuku(${index})">
-          Delete
-        </button>
-
+          <button
+            class="btn-delete"
+            onclick="hapusBuku(${item.originalIndex !== undefined ? item.originalIndex : index})">
+            Delete
+          </button>
         </td>
 
       </tr>
@@ -326,9 +324,9 @@ window.detailBuku = detailBuku;
       .value
       .toLowerCase();
 
-    const hasil = buku.filter(item =>
-      item.judul.toLowerCase().includes(keyword)
-    );
+const hasil = buku
+      .map((item, index) => ({ ...item, originalIndex: index }))
+      .filter(item => item.judul.toLowerCase().includes(keyword));
 
     tampilkanBuku(hasil);
   }
@@ -512,7 +510,9 @@ const buku =
 
 // ========= DETAIL BOOK =========
 
-const detailIndex = localStorage.getItem("detailBukuIndex");
+const urlParams = new URLSearchParams(window.location.search);
+const detailIndex = urlParams.get('id');
+
 const detailJudul = document.getElementById("detailJudul");
 const detailEpisode = document.getElementById("detailEpisode");
 const detailPenulis = document.getElementById("detailPenulis");
@@ -525,9 +525,8 @@ if (detailIndex !== null && detailJudul && detailEpisode) {
   
   if (dataAktif) {
     detailJudul.innerText = dataAktif.judul;
-    detailEpisode.innerText = dataAktif.tahun;
+    detailEpisode.innerText = dataAktif.episode;
     detailPenulis.innerText = dataAktif.penulis;
-    detailTahun.innerText = dataAktif.progress + "%";
     detailKategori.innerText = dataAktif.status;
   } else {
     detailJudul.innerText = "Data tidak ditemukan";
