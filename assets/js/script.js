@@ -91,6 +91,21 @@ function login() {
   }
 }
 
+//  Hide Password
+function togglePassword(inputId, element) {
+  const passwordInput = document.getElementById(inputId);
+  
+  if (passwordInput) {
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      element.innerText = "🙈"; 
+    } else {
+      passwordInput.type = "password";
+      element.innerText = "👁"; // 
+    }
+  }
+}
+window.togglePassword = togglePassword;
 
 
 // ================= DASHBOARD =================
@@ -98,6 +113,8 @@ function login() {
 if (document.body.classList.contains("dashboard-page")) {
 
   let buku = JSON.parse(localStorage.getItem("buku")) || [];
+
+  let dataTerhapus = null;
 
   const tbody = document.getElementById("data-buku");
 
@@ -155,12 +172,18 @@ if (document.body.classList.contains("dashboard-page")) {
 
         </td>
 
-        <td class="actions">
-
-          <button onclick="hapusBuku(${index})">
-            🗑️
+<td class="actions">
+          <button
+            class="btn-detail"
+            onclick="detailBuku(${item.originalIndex !== undefined ? item.originalIndex : index})">
+            Detail
           </button>
 
+          <button
+            class="btn-delete"
+            onclick="hapusBuku(${item.originalIndex !== undefined ? item.originalIndex : index})">
+            Delete
+          </button>
         </td>
 
       </tr>
@@ -208,6 +231,11 @@ if (document.body.classList.contains("dashboard-page")) {
 
     if (yakin) {
 
+      dataTerhapus = {
+        data: buku[index],
+        index: index
+      };
+
       buku.splice(index, 1);
 
       localStorage.setItem(
@@ -215,11 +243,77 @@ if (document.body.classList.contains("dashboard-page")) {
         JSON.stringify(buku)
       );
 
+      renderChart();
+      updateCard();
+
+      tampilkanUndo();
+
       tampilkanBuku();
     }
   }
 
   window.hapusBuku = hapusBuku;
+
+  function tampilkanUndo() {
+
+  const undoBox =
+    document.getElementById("undoBox");
+
+  undoBox.innerHTML = `
+
+    <div class="undo-alert">
+
+      Buku berhasil dihapus
+
+      <button onclick="undoHapus()">
+        Undo
+      </button>
+
+    </div>
+
+  `;
+}
+
+function undoHapus() {
+
+  if (dataTerhapus !== null) {
+
+    buku.splice(
+      dataTerhapus.index,
+      0,
+      dataTerhapus.data
+    );
+
+    localStorage.setItem(
+      "buku",
+      JSON.stringify(buku)
+    );
+
+    renderChart();
+    updateCard();
+
+    document.getElementById(
+      "undoBox"
+    ).innerHTML = "";
+
+    dataTerhapus = null;
+
+    tampilkanBuku();
+
+    renderChart();
+    updateCard();
+  }
+}
+
+window.undoHapus = undoHapus;
+
+  function detailBuku(index) {
+
+  window.location.href =
+    `detail-book.html?id=${index}`;
+}
+
+window.detailBuku = detailBuku;
 
   // ================= SEARCH =================
 
@@ -230,30 +324,45 @@ if (document.body.classList.contains("dashboard-page")) {
       .value
       .toLowerCase();
 
-    const hasil = buku.filter(item =>
-      item.judul.toLowerCase().includes(keyword)
-    );
+const hasil = buku
+      .map((item, index) => ({ ...item, originalIndex: index }))
+      .filter(item => item.judul.toLowerCase().includes(keyword));
 
     tampilkanBuku(hasil);
   }
 
   window.searchBuku = searchBuku;
 
+  
   // ================= CHART =================
 
-  function renderChart() {
+let genreChartInstance;
+let progressChartInstance;
 
-    const selesai =
-      buku.filter(item => item.status === "Selesai").length;
+function renderChart() {
 
-    const dibaca =
-      buku.filter(item => item.status === "Sedang Dibaca").length;
+  const selesai =
+    buku.filter(item => item.status === "Selesai").length;
 
-    const wishlist =
-      buku.filter(item => item.status === "Wishlist").length;
+  const dibaca =
+    buku.filter(item => item.status === "Sedang Dibaca").length;
 
-    // Doughnut
-    new Chart(document.getElementById("genreChart"), {
+  const wishlist =
+    buku.filter(item => item.status === "Wishlist").length;
+
+  // HAPUS CHART LAMA
+  if (genreChartInstance) {
+    genreChartInstance.destroy();
+  }
+
+  if (progressChartInstance) {
+    progressChartInstance.destroy();
+  }
+
+  // DOUGHNUT CHART
+  genreChartInstance = new Chart(
+    document.getElementById("genreChart"),
+    {
 
       type: "doughnut",
 
@@ -279,10 +388,13 @@ if (document.body.classList.contains("dashboard-page")) {
           ]
         }]
       }
-    });
+    }
+  );
 
-    // Bar
-    new Chart(document.getElementById("progressChart"), {
+  // BAR CHART
+  progressChartInstance = new Chart(
+    document.getElementById("progressChart"),
+    {
 
       type: "bar",
 
@@ -301,9 +413,9 @@ if (document.body.classList.contains("dashboard-page")) {
           borderRadius: 10
         }]
       }
-    });
-  }
-
+    }
+  );
+}
   tampilkanBuku();
 }
 
@@ -398,7 +510,9 @@ const buku =
 
 // ========= DETAIL BOOK =========
 
-const detailIndex = localStorage.getItem("detailBukuIndex");
+const urlParams = new URLSearchParams(window.location.search);
+const detailIndex = urlParams.get('id');
+
 const detailJudul = document.getElementById("detailJudul");
 const detailEpisode = document.getElementById("detailEpisode");
 const detailPenulis = document.getElementById("detailPenulis");
@@ -411,9 +525,8 @@ if (detailIndex !== null && detailJudul && detailEpisode) {
   
   if (dataAktif) {
     detailJudul.innerText = dataAktif.judul;
-    detailEpisode.innerText = dataAktif.tahun;
+    detailEpisode.innerText = dataAktif.episode;
     detailPenulis.innerText = dataAktif.penulis;
-    detailTahun.innerText = dataAktif.progress + "%";
     detailKategori.innerText = dataAktif.status;
   } else {
     detailJudul.innerText = "Data tidak ditemukan";

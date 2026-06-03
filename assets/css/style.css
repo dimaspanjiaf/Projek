@@ -518,6 +518,15 @@ body.login-page {
   box-shadow: 0 14px 30px rgba(255, 209, 102, 0.35);
   filter: brightness(1.05);
 }
+
+
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+.password-box span {
+  user-select: none;
+}
 /* ========= dashboard.html ========= */
 
 * {
@@ -558,15 +567,21 @@ body {
   gap: 12px;
   padding: 14px 16px;
   margin-bottom: 10px;
-  border-radius: 12px;
+  border-radius: 20px;
   color: white;
   text-decoration: none;
   transition: 0.25s;
+  font-weight: 500;
 }
 
-.menu:hover,
+/* MENU AKTIF */
 .menu.active {
-  background: linear-gradient(135deg, #4b5563, #6b7280);
+  background: #6b7280;
+}
+
+/* HOVER */
+.menu:hover {
+  background: #4b5563;
 }
 
 .main {
@@ -717,14 +732,68 @@ tr:hover {
 }
 
 .actions button {
+
   border: none;
-  background: #e2e8f0;
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  margin-right: 8px;
+
+  padding: 10px 16px;
+
+  border-radius: 12px;
+
   cursor: pointer;
-  transition: 0.2s;
+
+  transition: 0.25s ease;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  color: white;
+
+  min-width: 80px;
+}
+
+/* DETAIL BUTTON */
+
+.btn-detail {
+
+  background: linear-gradient(
+    135deg,
+    #4b5563,
+    #6b7280
+  );
+}
+
+.btn-detail:hover {
+
+  transform: translateY(-2px);
+
+  opacity: 0.9;
+}
+
+.btn-detail:hover {
+  background: #4b5563 !important;
+}
+
+/* DELETE BUTTON */
+
+.btn-delete {
+
+  background: linear-gradient(
+    135deg,
+    #ef4444,
+    #dc2626
+  );
+}
+
+.btn-delete:hover {
+
+  transform: translateY(-2px);
+
+  opacity: 0.9;
+}
+
+.btn-delete:hover {
+  background: #dc2626 !important;
 }
 
 .actions button:hover {
@@ -760,6 +829,58 @@ tr:hover {
 .progress {
   height: 100%;
   background: linear-gradient(90deg, #4b5563, #6b7280);
+}
+
+#undoBox {
+  margin-bottom: 18px;
+}
+
+.undo-alert {
+  background: #1e293b;
+  color: white;
+
+  padding: 14px 18px;
+
+  border-radius: 14px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  animation: fadeIn 0.3s ease;
+}
+
+.undo-alert button {
+  background: white;
+  color: #1e293b;
+
+  border: none;
+
+  padding: 8px 14px;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  font-weight: 600;
+}
+
+.undo-alert button:hover {
+  opacity: 0.85;
+}
+
+@keyframes fadeIn {
+
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
 }
 
 @media(max-width: 900px) {
@@ -893,9 +1014,14 @@ body.about-page{
   font-weight:500;
 }
 
-.menu:hover,
 .menu.active{
-  background:#5f6b82;
+  background:#6b7280;
+  border-radius:20px;
+}
+
+.menu:hover{
+  background:#4b5563;
+  border-radius:20px;
 }
 
 /* MAIN CONTENT */
@@ -1320,39 +1446,49 @@ body.dark-mode {
   color: #e5e5e5 !important;
 }
 
-/* container utama */
-body.dark-mode .navbar,
+/* CARD & CONTAINER */
 body.dark-mode .topbar,
 body.dark-mode .table-section,
 body.dark-mode .chart-box,
 body.dark-mode .form-card,
 body.dark-mode .about-card,
 body.dark-mode .detail-card,
-body.dark-mode .hero,
-body.dark-mode .auth-container,
-body.dark-mode .toggle-panel,
-body.dark-mode .card {
-  background: #1e1e1e !important;
+body.dark-mode .card,
+body.dark-mode .auth-container {
+  background-color: #1e1e1e !important;
   color: #e5e5e5 !important;
 }
 
-/* sidebar */
+/* HERO */
+body.dark-mode .hero {
+  background: linear-gradient(135deg, #1f2937, #111827) !important;
+  color: white !important;
+}
+
+/* TOGGLE PANEL LOGIN */
+body.dark-mode .toggle-panel {
+  background: linear-gradient(135deg, #111827, #1f2937) !important;
+  color: white !important;
+}
+
+/* SIDEBAR */
 body.dark-mode .sidebar {
   background: #111827 !important;
 }
 
-/* text */
+/* TEXT */
 body.dark-mode h1,
 body.dark-mode h2,
 body.dark-mode h3,
 body.dark-mode p,
 body.dark-mode span,
 body.dark-mode label,
-body.dark-mode strong {
+body.dark-mode strong,
+body.dark-mode a {
   color: #e5e5e5 !important;
 }
 
-/* input */
+/* INPUT */
 body.dark-mode input,
 body.dark-mode select,
 body.dark-mode textarea {
@@ -1361,7 +1497,7 @@ body.dark-mode textarea {
   border: 1px solid #444 !important;
 }
 
-/* table */
+/* TABLE */
 body.dark-mode table {
   background: #1e1e1e !important;
 }
@@ -1375,15 +1511,27 @@ body.dark-mode td {
   border-color: #333 !important;
 }
 
-/* button */
+/* BUTTON */
 body.dark-mode .btn,
 body.dark-mode .dark-btn,
 body.dark-mode .form-card button {
   background: #374151 !important;
   color: white !important;
 }
-/* hover menu */
+
+/* MENU */
 body.dark-mode .menu:hover,
 body.dark-mode .menu.active {
   background: #374151 !important;
+}
+
+/* TAMBAHAN */
+.menu {
+  font-weight: 500;
+  transform: scale(1);
+}
+
+.menu.active {
+  font-weight: 700;
+  transform: scale(1.03);
 }
