@@ -79,7 +79,7 @@ body {
 .hero {
   width: 100%;
   max-width: 900px;                
-  background: linear-gradient(135deg, #6d7071, #6d7071);
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
   padding: 50px 40px;
   border-radius: 22px;             
   text-align: center;
@@ -268,10 +268,28 @@ body {
 body.login-page {
   min-height: 100vh;
   background: linear-gradient(135deg, #57595a, #6d7071);
+  overflow: hidden;
+ 
+}
+.login-wrapper {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  min-height: 100vh;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+
+  padding: 30px;
+}
+@media (max-width: 768px) {
+
+  .login-wrapper {
+    margin-left: 0;
+    width: 100%;
+    padding: 20px;
+  }
+
 }
 
 .auth-container {
@@ -1025,8 +1043,9 @@ body.about-page{
 }
 
 /* MAIN CONTENT */
-.main-content{
+body.about-page .main-content{
   margin-left:260px;
+  width: calc(100% - 260px);
   min-height:100vh;
 
   display:flex;
@@ -1041,6 +1060,7 @@ body.about-page{
   width:100%;
   display:flex;
   justify-content:center;
+  align-items:center;
 }
 
 /* CARD */
@@ -1534,4 +1554,51 @@ body.dark-mode .menu.active {
 .menu.active {
   font-weight: 700;
   transform: scale(1.03);
+}
+
+body.dark-mode {
+  background: #121212 !important;
+  color: #e5e5e5 !important;
+}
+
+/* CARD & CONTAINER */
+body.dark-mode .topbar,
+body.dark-mode .table-section,
+body.dark-mode .chart-box,
+body.dark-mode .form-card,
+body.dark-mode .about-card,
+body.dark-mode .detail-card,
+body.dark-mode .card,
+body.dark-mode .auth-container {
+  background-color: #1e1e1e !important;
+  color: #e5e5e5 !important;
+}
+/* ===== ABOUT PAGE FIX ===== */
+
+body.about-page {
+  display: block !important;
+}
+
+body.about-page .main-content {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 40px;
+}
+
+body.about-page .about-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body.about-page .about-card {
+  max-width: 850px;
+  width: 100%;
 }
