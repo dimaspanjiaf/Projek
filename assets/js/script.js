@@ -467,7 +467,11 @@ function tambahData() {
 
     return;
   }
-
+if (Number(episodeInput.value) < 0)
+{
+  alert("Episode tidak boleh kurang dari 0!");
+  return;
+}
 const dataBaru = {
 
   judul:
