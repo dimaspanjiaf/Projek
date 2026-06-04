@@ -72,19 +72,26 @@ function login() {
   const password = document.getElementById("loginPassword").value;
   const msg = document.getElementById("loginMsg");
 
-  const user = users.find(function(user) {
-    return user.email === email && user.password === password;
+  if (email === "" || password === "") {
+    msg.className = "message error";
+    msg.innerText = "Email dan password wajib diisi!";
+    return;
+  }
+
+  const user = users.find(function(u) {
+    return u.email === email && u.password === password;
   });
 
   if (user) {
-    saveData("loginUser", user);
-
     msg.className = "message success";
-    msg.innerText = "Login berhasil!";
+    msg.innerText = "Login sukses! Mengalihkan...";
+
+    localStorage.setItem("isLoggedIn", "true");
+    localStorage.setItem("currentUser", JSON.stringify(user));
 
     setTimeout(function() {
       window.location.href = "dashboard.html";
-    }, 1000);
+    }, 1500);
   } else {
     msg.className = "message error";
     msg.innerText = "Email atau password salah!";
@@ -107,6 +114,35 @@ function togglePassword(inputId, element) {
 }
 window.togglePassword = togglePassword;
 
+// MENGUBAH LOGIN MENJADI LOG OUT 
+function handleAuthMenu() {
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const sidebarLinks = document.querySelectorAll(".sidebar .menu");
+  
+  sidebarLinks.forEach(function(link) {
+    if (link.getAttribute("href") === "login.html") {
+      
+      if (isLoggedIn === "true") {
+        link.innerHTML = "Log Out";
+        link.setAttribute("href", "#"); 
+        link.classList.remove("active"); 
+        link.onclick = function(e) {
+          e.preventDefault();
+          
+          const konfirmasi = confirm("Apakah kamu yakin ingin keluar?");
+          if (konfirmasi) {
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("currentUser");
+            
+            alert("Kamu berhasil log out!");
+            window.location.href = "index.html"; 
+          }
+        };
+      }
+    }
+  });
+}
+document.addEventListener("DOMContentLoaded", handleAuthMenu);
 
 // ================= DASHBOARD =================
 
