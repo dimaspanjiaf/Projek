@@ -162,7 +162,7 @@ if (document.body.classList.contains("dashboard-page")) {
 
       tbody.innerHTML = `
         <tr>
-          <td colspan="5" style="text-align:center;">
+          <td colspan="6" style="text-align:center;">
             Belum ada buku ditambahkan
           </td>
         </tr>
@@ -182,6 +182,8 @@ if (document.body.classList.contains("dashboard-page")) {
         </td>
 
         <td>${item.penulis}</td>
+
+        <td><strong>${item.platform || '-'}</strong></td>
 
         <td>
           <span class="badge reading">
@@ -484,7 +486,7 @@ const progressInput =
 // =========================
 
 function tambahData() {
-
+  const platformInput = document.getElementById("platform");
   const buku =
     JSON.parse(localStorage.getItem("buku")) || [];
 
@@ -494,6 +496,7 @@ function tambahData() {
     penulisInput.value.trim() === "" ||
     episodeInput.value.trim() === "" ||
     genreInput.value.trim() === "" ||
+    platformInput.value.trim() === "" ||
     kategoriInput.value.trim() === "" ||
     progressInput.value.trim() === ""
 
@@ -508,6 +511,12 @@ if (Number(episodeInput.value) < 0)
   alert("Episode tidak boleh kurang dari 0!");
   return;
 }
+
+if (Number(progressInput.value) < 0 || Number(progressInput.value) > 100) {
+    alert("Progress harus berada di antara 0% hingga 100%!");
+    return;
+  }
+
 const dataBaru = {
 
   judul:
@@ -521,6 +530,9 @@ const dataBaru = {
 
   genre:
     genreInput.value,
+
+  platform:
+    platformInput.value,
 
   status:
     kategoriInput.value,
@@ -536,6 +548,8 @@ const dataBaru = {
   );
 
   alert("Buku berhasil ditambahkan!");
+
+  if (platformInput) platformInput.value = "";
 
   window.location.href =
     "dashboard.html";
@@ -558,6 +572,7 @@ const detailEpisode = document.getElementById("detailEpisode");
 const detailPenulis = document.getElementById("detailPenulis");
 const detailTahun = document.getElementById("detailTahun");
 const detailKategori = document.getElementById("detailKategori");
+const detailPlatform = document.getElementById("detailPlatform");
 
 // Render data detail saat halaman detail dibuka
 if (detailIndex !== null && detailJudul && detailEpisode) {
@@ -568,6 +583,10 @@ if (detailIndex !== null && detailJudul && detailEpisode) {
     detailEpisode.innerText = dataAktif.episode;
     detailPenulis.innerText = dataAktif.penulis;
     detailKategori.innerText = dataAktif.status;
+    
+    if (detailGenre) detailGenre.innerText = dataAktif.genre || "-";
+    if (detailTahun) detailTahun.innerText = dataAktif.tahun || "-";
+    if (detailPlatform) detailPlatform.innerText = dataAktif.platform || "-";
   } else {
     detailJudul.innerText = "Data tidak ditemukan";
     detailEpisode.innerText = "-";
@@ -609,33 +628,27 @@ function hapusProgressDetail() {
     window.location.href = "dashboard.html"; // Redirect ke dashboard setelah hapus
   }
 }
+
+// ================= DARK MODE =================
 function toggleDarkMode() {
   document.body.classList.toggle("dark-mode");
-
-  // simpan pilihan user
-  if (document.body.classList.contains("dark-mode")) {
-    localStorage.setItem("theme", "dark");
-  } else {
-    localStorage.setItem("theme", "light");
-  }
-}
-window.addEventListener("DOMContentLoaded", function () {
-  const theme = localStorage.getItem("theme");
-
-  if (theme === "dark") {
-    document.body.classList.add("dark-mode");
-  }
-});   
-function toggleDarkMode() {
-  document.body.classList.toggle("dark-mode");
-
   const btn = document.querySelector(".dark-btn");
 
   if (document.body.classList.contains("dark-mode")) {
-    btn.innerHTML = "☀️ Light Mode";
+    if (btn) btn.innerHTML = "☀️ Light Mode";
     localStorage.setItem("theme", "dark");
   } else {
-    btn.innerHTML = "🌙 Dark Mode";
+    if (btn) btn.innerHTML = "🌙 Dark Mode";
     localStorage.setItem("theme", "light");
   }
 }
+
+window.addEventListener("DOMContentLoaded", function () {
+  const theme = localStorage.getItem("theme");
+  const btn = document.querySelector(".dark-btn");
+
+  if (theme === "dark") {
+    document.body.classList.add("dark-mode");
+    if (btn) btn.innerHTML = "☀️ Light Mode";
+  }
+});

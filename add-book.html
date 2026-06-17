@@ -61,11 +61,8 @@
 
     <!-- MAIN CONTENT -->
     <div class="main-content">
-
         <div class="add-book-container">
-
             <div class="form-card">
-
                 <h2>Add Book Progress</h2>
 
                 <!-- JUDUL -->
@@ -97,25 +94,32 @@
                     placeholder="Genre Buku"
                 >
 
-                <!-- STATUS -->
+                <!-- TAHUN -->
+                <input
+                    type="number"
+                    id="tahun"
+                    placeholder="Tahun Terbit"
+                    min="1000"
+                    max="2030"
+                >
+
+                <!-- Platform -->
+                <select id="platform">
+                    <option value="">Pilih Platform Bacaan</option>
+                    <option value="Wattpad">Wattpad</option>
+                    <option value="Webtoon">Webtoon</option>
+                    <option value="Twitter">Twitter (X)</option>
+                    <option value="Instagram">Instagram</option>
+                    <option value="Buku Fisik">Buku Fisik</option>
+                    <option value="Lainnya">Lainnya</option>
+                </select>
+
+                <!-- kategori -->
                 <select id="kategori">
-
-                    <option value="">
-                        Pilih Status Bacaan
-                    </option>
-
-                    <option value="Sedang Dibaca">
-                        Sedang Dibaca
-                    </option>
-
-                    <option value="Selesai">
-                        Selesai
-                    </option>
-
-                    <option value="Wishlist">
-                        Wishlist
-                    </option>
-
+                    <option value="">Pilih Status Bacaan</option>
+                    <option value="Sedang Dibaca">Sedang Dibaca</option>
+                    <option value="Selesai">Selesai</option>
+                    <option value="Wishlist">Wishlist</option>
                 </select>
 
                 <!-- PROGRESS -->
@@ -131,11 +135,8 @@
                 <button onclick="tambahData()">
                     Simpan Progress
                 </button>
-
             </div>
-
         </div>
-
     </div>
 
  
