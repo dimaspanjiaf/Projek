@@ -148,8 +148,13 @@ document.addEventListener("DOMContentLoaded", handleAuthMenu);
 
 if (document.body.classList.contains("dashboard-page")) {
 
-  let buku = JSON.parse(localStorage.getItem("buku")) || [];
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  const teksSapaan = document.getElementById("teksSapaan");
+  if (currentUser && currentUser.name && teksSapaan) {
+      teksSapaan.innerText = `Selamat Datang, ${currentUser.name} 👋`;
+  }
 
+  let buku = JSON.parse(localStorage.getItem("buku")) || [];
   let dataTerhapus = null;
 
   const tbody = document.getElementById("data-buku");
