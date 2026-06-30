@@ -471,9 +471,6 @@ function renderChart() {
 const judulInput =
   document.getElementById("judul");
 
-const penulisInput =
-  document.getElementById("penulis");
-
 const episodeInput =
   document.getElementById("episode");
 
@@ -490,74 +487,75 @@ const progressInput =
 // TAMBAH DATA
 // =========================
 
+// =========================
+// TAMBAH DATA
+// =========================
+
 function tambahData() {
+
+  const judulInput = document.getElementById("judul");
+  const episodeInput = document.getElementById("episode");
+  const genreInput = document.getElementById("genre");
   const platformInput = document.getElementById("platform");
-  const buku =
-    JSON.parse(localStorage.getItem("buku")) || [];
+  const kategoriInput = document.getElementById("kategori");
+  const progressInput = document.getElementById("progress");
 
+  let buku = JSON.parse(localStorage.getItem("buku")) || [];
+
+  // Validasi input
   if (
-
     judulInput.value.trim() === "" ||
-    penulisInput.value.trim() === "" ||
     episodeInput.value.trim() === "" ||
     genreInput.value.trim() === "" ||
     platformInput.value.trim() === "" ||
     kategoriInput.value.trim() === "" ||
     progressInput.value.trim() === ""
-
   ) {
-
     alert("Semua input wajib diisi!");
-
     return;
   }
-if (Number(episodeInput.value) < 0)
-{
-  alert("Episode tidak boleh kurang dari 0!");
-  return;
-}
 
-if (Number(progressInput.value) < 0 || Number(progressInput.value) > 100) {
+  // Validasi episode
+  if (Number(episodeInput.value) < 0) {
+    alert("Episode tidak boleh kurang dari 0!");
+    return;
+  }
+
+  // Validasi progress
+  if (
+    Number(progressInput.value) < 0 ||
+    Number(progressInput.value) > 100
+  ) {
     alert("Progress harus berada di antara 0% hingga 100%!");
     return;
   }
 
-const dataBaru = {
+  // Data baru
+  const dataBaru = {
+    judul: judulInput.value,
+    episode: episodeInput.value,
+    genre: genreInput.value,
+    platform: platformInput.value,
+    status: kategoriInput.value,
+    progress: Number(progressInput.value)
+  };
 
-  judul:
-    judulInput.value,
-
-  penulis:
-    penulisInput.value,
-
-  episode:
-    episodeInput.value,
-
-  genre:
-    genreInput.value,
-
-  platform:
-    platformInput.value,
-
-  status:
-    kategoriInput.value,
-
-  progress:
-    Number(progressInput.value)
-};
+  // Simpan ke localStorage
   buku.push(dataBaru);
-
-  localStorage.setItem(
-    "buku",
-    JSON.stringify(buku)
-  );
+  localStorage.setItem("buku", JSON.stringify(buku));
 
   alert("Buku berhasil ditambahkan!");
 
-  if (platformInput) platformInput.value = "";
+  // Kosongkan form
+  judulInput.value = "";
+  episodeInput.value = "";
+  genreInput.value = "";
+  platformInput.value = "";
+  kategoriInput.value = "";
+  progressInput.value = "";
 
-  window.location.href =
-    "dashboard.html";
+  // Pindah ke dashboard
+  window.location.href = "dashboard.html";
 }
 
 // GLOBAL
@@ -574,7 +572,6 @@ const detailIndex = urlParams.get('id');
 
 const detailJudul = document.getElementById("detailJudul");
 const detailEpisode = document.getElementById("detailEpisode");
-const detailPenulis = document.getElementById("detailPenulis");
 const detailTahun = document.getElementById("detailTahun");
 const detailKategori = document.getElementById("detailKategori");
 const detailPlatform = document.getElementById("detailPlatform");
@@ -586,7 +583,6 @@ if (detailIndex !== null && detailJudul && detailEpisode) {
   if (dataAktif) {
     detailJudul.innerText = dataAktif.judul;
     detailEpisode.innerText = dataAktif.episode;
-    detailPenulis.innerText = dataAktif.penulis;
     detailKategori.innerText = dataAktif.status;
     
     if (detailGenre) detailGenre.innerText = dataAktif.genre || "-";
