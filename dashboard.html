@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Dashboard - MyLibrary</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body class="dashboard-page">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+
+    <h1 class="logo">📚 MyLibrary</h1>
+
+    <a href="index.html" class="menu">
+      Home
+    </a>
+
+    <a href="dashboard.html" class="menu active">
+      Dashboard
+    </a>
+
+    <a href="add-book.html" class="menu">
+      Tambah Buku
+    </a>
+
+    <a href="detail-book.html" class="menu">
+      Detail Buku
+    </a>
+
+    <a href="about.html" class="menu">
+      About
+    </a>
+
+    <a href="login.html" class="menu">
+      Login
+    </a>
+
+    <button class="dark-btn" onclick="toggleDarkMode()">
+      🌙 Dark Mode
+    </button>
+
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+    <div id="clock"></div>
+
+      <div>
+        <h2 id="teksSapaan">Selamat Datang 👋</h2>
+        <p>Kelola progress bacaanmu dengan mudah.</p>
+      </div>
+
+    </div>
+
+    <div class="last-login-box">
+      <strong>🕒 Login Terakhir :</strong>
+      <span id="lastLogin">-</span>
+    </div>
+
+    <!-- CARD -->
+    <div class="reminder-box" id="reminderBox"></div>
+    <div class="cards">
+
+      <div class="card green">
+        <h1 id="totalBuku">0</h1>
+        <p>Total Buku</p>
+      </div>
+
+      <div class="card blue">
+        <h1 id="selesaiBuku">0</h1>
+        <p>Selesai</p>
+      </div>
+
+      <div class="card orange">
+        <h1 id="dibacaBuku">0</h1>
+        <p>Sedang Dibaca</p>
+      </div>
+
+      <div class="card pink">
+        <h1 id="wishlistBuku">0</h1>
+        <p>Wishlist</p>
+      </div>
+
+    </div>
+
+    <!-- TABLE -->
+    <div id="undoBox"></div>
+    
+    <div class="table-section">
+      
+
+      <div class="section-title">
+        <h2>Daftar Buku</h2>
+      </div>
+
+      <input
+  type="text"
+  id="searchInput"
+  class="search-box"
+  placeholder="🔍 Cari judul buku..."
+  onkeyup="searchBuku()"
+/>
+
+      <table>
+
+        <thead>
+        <tr>
+            <th>Buku</th>
+            <th>Episode</th>
+            <th>Genre</th>
+            <th>Platform</th>
+            <th>Status Bacaan</th>
+            <th>Progress</th>
+            <th>Opsi</th>
+          </tr>
+        </thead>
+
+        <tbody id="data-buku">
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+    <!-- CHART -->
+    <div class="charts">
+
+      <div class="chart-box">
+        <h3 style="margin-bottom:20px;">
+          Statistik Status Buku
+        </h3>
+
+        <canvas id="genreChart"></canvas>
+      </div>
+
+      <div class="chart-box">
+        <h3 style="margin-bottom:20px;">
+          Progress Membaca
+        </h3>
+
+        <canvas id="progressChart"></canvas>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="assets/js/script.js"></script>
+
+</body>
+</html>
