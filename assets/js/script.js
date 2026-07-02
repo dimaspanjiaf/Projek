@@ -182,68 +182,69 @@ if (document.body.classList.contains("dashboard-page")) {
     data.forEach((item, index) => {
 
       tbody.innerHTML += `
-      
-      <tr>
+  <tr>
 
-        <td>
-          <strong>${item.judul}</strong>
-        </td>
+    <td>
+        <strong>${item.judul}</strong>
+    </td>
 
-        <td><strong>${item.platform || '-'}</strong></td>
+    <td>
+        ${item.episode}
+    </td>
 
-        <td>
-          <span class="badge reading">
+    <td>
+        ${item.genre}
+    </td>
+
+    <td>
+        ${item.platform}
+    </td>
+
+    <td>
+        <span class="badge reading">
             ${item.status}
-          </span>
-        </td>
+        </span>
+    </td>
 
-        <td>
-
-          <div class="progress-wrap">
+    <td>
+        <div class="progress-wrap">
 
             ${item.progress}%
 
             <div class="progress-bar">
-
-              <div 
-                class="progress"
-                style="width:${item.progress}%">
-              </div>
-
+                <div
+                    class="progress"
+                    style="width:${item.progress}%">
+                </div>
             </div>
 
-          </div>
+        </div>
+    </td>
 
-        </td>
+    <td class="actions">
 
-<td class="actions">
-          <button
+        <button
             class="btn-detail"
             onclick="detailBuku(${item.originalIndex !== undefined ? item.originalIndex : index})">
             Detail
-          </button>
+        </button>
 
-          <button
+        <button
             class="btn-delete"
             onclick="hapusBuku(${item.originalIndex !== undefined ? item.originalIndex : index})">
             Delete
-          </button>
-        </td>
+        </button>
 
-      </tr>
+    </td>
 
+  </tr>
       `;
+
     });
 
     updateCard();
     renderChart();
   }
-
-  function detailBuku(index) {
-
-    window.location.href = `detail-book.html?id=${index}`;
-
-      }
 
     window.detailBuku = detailBuku;
 
@@ -570,17 +571,14 @@ function tambahData() {
 // GLOBAL
 window.tambahData = tambahData;
 
-const buku =
-  JSON.parse(localStorage.getItem("buku")) || [];
-
-
 
 
 // =========================
 // DETAIL BOOK
 // =========================
 
-const buku = JSON.parse(localStorage.getItem("buku")) || [];
+const buku =
+  JSON.parse(localStorage.getItem("buku")) || [];
 
 const urlParams = new URLSearchParams(window.location.search);
 const detailIndex = urlParams.get("id");
@@ -622,41 +620,90 @@ if (
 
 }
 
-// Fungsi Edit khusus untuk Halaman Detail
+// =========================
+// EDIT DETAIL BOOK
+// =========================
 function editProgressDetail() {
+
   if (detailIndex === null) return;
 
   const data = buku[detailIndex];
-  const judulBaru = prompt("Edit Judul", data.judul);
-  const episodeBaru = prompt("Edit Progress", data.episode);
 
-  if (judulBaru === null || episodeBaru === null || judulBaru === "" || episodeBaru === "") {
+  const judulBaru = prompt("Edit Judul", data.judul);
+  if (judulBaru === null) return;
+
+  const episodeBaru = prompt("Edit Episode", data.episode);
+  if (episodeBaru === null) return;
+
+  const genreBaru = prompt("Edit Genre", data.genre);
+  if (genreBaru === null) return;
+
+  const platformBaru = prompt("Edit Platform", data.platform);
+  if (platformBaru === null) return;
+
+  const statusBaru = prompt(
+    "Edit Status (Sedang Dibaca / Selesai / Wishlist)",
+    data.status
+  );
+  if (statusBaru === null) return;
+
+  const progressBaru = prompt(
+    "Edit Progress (0 - 100)",
+    data.progress
+  );
+  if (progressBaru === null) return;
+
+  if (progressBaru < 0 || progressBaru > 100) {
+    alert("Progress harus 0 - 100%");
     return;
   }
 
- buku[detailIndex].judul = judulBaru;
- buku[detailIndex].episode = episodeBaru;
+  // Simpan perubahan
+  buku[detailIndex].judul = judulBaru;
+  buku[detailIndex].episode = episodeBaru;
+  buku[detailIndex].genre = genreBaru;
+  buku[detailIndex].platform = platformBaru;
+  buku[detailIndex].status = statusBaru;
+  buku[detailIndex].progress = Number(progressBaru);
+
   localStorage.setItem("buku", JSON.stringify(buku));
-  
-  // Update tampilan langsung di web luar tanpa reload penuh
+
+  // Update tampilan
   detailJudul.innerText = judulBaru;
   detailEpisode.innerText = episodeBaru;
+  detailGenre.innerText = genreBaru;
+  detailPlatform.innerText = platformBaru;
+  detailStatus.innerText = statusBaru;
+  detailProgress.innerText = progressBaru + "%";
+
+  alert("Data berhasil diperbarui!");
 }
 
-// Fungsi Hapus khusus untuk Halaman Detail
+window.editProgressDetail = editProgressDetail;
+
+
+// ================= HAPUS DETAIL BOOK ====================//
 function hapusProgressDetail() {
+
   if (detailIndex === null) return;
 
-  const yakin = confirm("Yakin ingin menghapus progress ini?");
-  if (yakin) {
-    buku.splice(detailIndex, 1);
-   localStorage.setItem("buku", JSON.stringify(buku));
-    localStorage.removeItem("detailBukuIndex"); // hapus tracker index aktif
-    
-    alert("Data berhasil dihapus!");
-    window.location.href = "dashboard.html"; // Redirect ke dashboard setelah hapus
-  }
+  const yakin = confirm("Yakin ingin menghapus buku ini?");
+
+  if (!yakin) return;
+
+  buku.splice(detailIndex, 1);
+
+  localStorage.setItem("buku", JSON.stringify(buku));
+
+  alert("Data berhasil dihapus!");
+
+  window.location.href = "dashboard.html";
 }
+
+window.hapusProgressDetail = hapusProgressDetail;
+
+
+
 
 // ================= DARK MODE =================
 function toggleDarkMode() {
