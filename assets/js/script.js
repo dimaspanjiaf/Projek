@@ -144,6 +144,9 @@ function handleAuthMenu() {
 }
 document.addEventListener("DOMContentLoaded", handleAuthMenu);
 
+
+
+
 // ================= DASHBOARD =================
 
 if (document.body.classList.contains("dashboard-page")) {
@@ -185,8 +188,6 @@ if (document.body.classList.contains("dashboard-page")) {
         <td>
           <strong>${item.judul}</strong>
         </td>
-
-        <td>${item.penulis}</td>
 
         <td><strong>${item.platform || '-'}</strong></td>
 
@@ -237,6 +238,14 @@ if (document.body.classList.contains("dashboard-page")) {
     updateCard();
     renderChart();
   }
+
+  function detailBuku(index) {
+
+    window.location.href = `detail-book.html?id=${index}`;
+
+      }
+
+    window.detailBuku = detailBuku;
 
   // ================= UPDATE CARD =================
 
@@ -477,15 +486,15 @@ const episodeInput =
 const genreInput =
   document.getElementById("genre");
 
-const kategoriInput =
-  document.getElementById("kategori");
+const platformInput =
+  document.getElementById("platform");
+
+const statusInput =
+  document.getElementById("status");
 
 const progressInput =
   document.getElementById("progress");
 
-// =========================
-// TAMBAH DATA
-// =========================
 
 // =========================
 // TAMBAH DATA
@@ -497,7 +506,7 @@ function tambahData() {
   const episodeInput = document.getElementById("episode");
   const genreInput = document.getElementById("genre");
   const platformInput = document.getElementById("platform");
-  const kategoriInput = document.getElementById("kategori");
+  const statusInput = document.getElementById("status");
   const progressInput = document.getElementById("progress");
 
   let buku = JSON.parse(localStorage.getItem("buku")) || [];
@@ -508,7 +517,7 @@ function tambahData() {
     episodeInput.value.trim() === "" ||
     genreInput.value.trim() === "" ||
     platformInput.value.trim() === "" ||
-    kategoriInput.value.trim() === "" ||
+    statusInput.value.trim() === "" ||
     progressInput.value.trim() === ""
   ) {
     alert("Semua input wajib diisi!");
@@ -536,7 +545,7 @@ function tambahData() {
     episode: episodeInput.value,
     genre: genreInput.value,
     platform: platformInput.value,
-    status: kategoriInput.value,
+    status: statusInput.value,
     progress: Number(progressInput.value)
   };
 
@@ -551,7 +560,7 @@ function tambahData() {
   episodeInput.value = "";
   genreInput.value = "";
   platformInput.value = "";
-  kategoriInput.value = "";
+  statusInput.value = "";
   progressInput.value = "";
 
   // Pindah ke dashboard
@@ -565,33 +574,52 @@ const buku =
   JSON.parse(localStorage.getItem("buku")) || [];
 
 
-// ========= DETAIL BOOK =========
+
+
+// =========================
+// DETAIL BOOK
+// =========================
+
+const buku = JSON.parse(localStorage.getItem("buku")) || [];
 
 const urlParams = new URLSearchParams(window.location.search);
-const detailIndex = urlParams.get('id');
+const detailIndex = urlParams.get("id");
 
 const detailJudul = document.getElementById("detailJudul");
 const detailEpisode = document.getElementById("detailEpisode");
-const detailTahun = document.getElementById("detailTahun");
-const detailKategori = document.getElementById("detailKategori");
+const detailGenre = document.getElementById("detailGenre");
 const detailPlatform = document.getElementById("detailPlatform");
+const detailStatus = document.getElementById("detailStatus");
+const detailProgress = document.getElementById("detailProgress");
 
-// Render data detail saat halaman detail dibuka
-if (detailIndex !== null && detailJudul && detailEpisode) {
-  const dataAktif = buku[detailIndex];
-  
-  if (dataAktif) {
-    detailJudul.innerText = dataAktif.judul;
-    detailEpisode.innerText = dataAktif.episode;
-    detailKategori.innerText = dataAktif.status;
-    
-    if (detailGenre) detailGenre.innerText = dataAktif.genre || "-";
-    if (detailTahun) detailTahun.innerText = dataAktif.tahun || "-";
-    if (detailPlatform) detailPlatform.innerText = dataAktif.platform || "-";
-  } else {
-    detailJudul.innerText = "Data tidak ditemukan";
-    detailEpisode.innerText = "-";
-  }
+if (
+    detailIndex !== null &&
+    detailJudul &&
+    detailEpisode
+) {
+
+    const data = buku[detailIndex];
+
+    if (data) {
+
+        detailJudul.innerText = data.judul;
+        detailEpisode.innerText = data.episode;
+        detailGenre.innerText = data.genre;
+        detailPlatform.innerText = data.platform;
+        detailStatus.innerText = data.status;
+        detailProgress.innerText = data.progress;
+
+    } else {
+
+        detailJudul.innerText = "Data tidak ditemukan";
+        detailEpisode.innerText = "-";
+        detailGenre.innerText = "-";
+        detailPlatform.innerText = "-";
+        detailStatus.innerText = "-";
+        detailProgress.innerText = "-";
+
+    }
+
 }
 
 // Fungsi Edit khusus untuk Halaman Detail
@@ -607,7 +635,7 @@ function editProgressDetail() {
   }
 
  buku[detailIndex].judul = judulBaru;
-buku[detailIndex].episode = episodeBaru;
+ buku[detailIndex].episode = episodeBaru;
   localStorage.setItem("buku", JSON.stringify(buku));
   
   // Update tampilan langsung di web luar tanpa reload penuh
