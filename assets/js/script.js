@@ -654,7 +654,6 @@ const buku =
 
 const urlParams = new URLSearchParams(window.location.search);
 const detailIndex = urlParams.get("id");
-
 const detailJudul = document.getElementById("detailJudul");
 const detailEpisode = document.getElementById("detailEpisode");
 const detailGenre = document.getElementById("detailGenre");
@@ -671,14 +670,12 @@ if (
     const data = buku[detailIndex];
 
     if (data) {
-
-        detailJudul.innerText = data.judul;
-        detailEpisode.innerText = data.episode;
-        detailGenre.innerText = data.genre;
-        detailPlatform.innerText = data.platform;
-        detailStatus.innerText = data.status;
-        detailProgress.innerText = data.progress;
-
+        detailJudul.value = data.judul;
+        detailEpisode.value = data.episode;
+        detailGenre.value = data.genre;
+        detailPlatform.value = data.platform;
+        detailStatus.value = data.status;
+        detailProgress.value = data.progress;
     } else {
 
         detailJudul.innerText = "Data tidak ditemukan";
@@ -687,72 +684,62 @@ if (
         detailPlatform.innerText = "-";
         detailStatus.innerText = "-";
         detailProgress.innerText = "-";
-
     }
-
 }
 
 // =========================
 // EDIT DETAIL BOOK
 // =========================
 function editProgressDetail() {
-
   if (detailIndex === null) return;
 
-  const data = buku[detailIndex];
+    detailJudul.readOnly = false;
+    detailEpisode.readOnly = false;
+    detailGenre.readOnly = false;
+    detailPlatform.readOnly = false;
+    detailProgress.readOnly = false;
+    detailStatus.disabled = false;
 
-  const judulBaru = prompt("Edit Judul", data.judul);
-  if (judulBaru === null) return;
+    const btn = document.querySelector(".btn-edit");
 
-  const episodeBaru = prompt("Edit Episode", data.episode);
-  if (episodeBaru === null) return;
+    btn.innerHTML = "Simpan";
+    btn.onclick = simpanEdit;
+}
 
-  const genreBaru = prompt("Edit Genre", data.genre);
-  if (genreBaru === null) return;
+function simpanEdit(){
+    if(detailProgress.value < 0 || detailProgress.value > 100){
+        alert("Progress harus 0-100%");
+        return;
+    }
 
-  const platformBaru = prompt("Edit Platform", data.platform);
-  if (platformBaru === null) return;
+    buku[detailIndex].judul = detailJudul.value;
+    buku[detailIndex].episode = detailEpisode.value;
+    buku[detailIndex].genre = detailGenre.value;
+    buku[detailIndex].platform = detailPlatform.value;
+    buku[detailIndex].status = detailStatus.value;
+    buku[detailIndex].progress = Number(detailProgress.value);
 
-  const statusBaru = prompt(
-    "Edit Status (Sedang Dibaca / Selesai / Wishlist)",
-    data.status
-  );
-  if (statusBaru === null) return;
+    localStorage.setItem(
+        "buku",
+        JSON.stringify(buku)
+    );
 
-  const progressBaru = prompt(
-    "Edit Progress (0 - 100)",
-    data.progress
-  );
-  if (progressBaru === null) return;
+    detailJudul.readOnly = true;
+    detailEpisode.readOnly = true;
+    detailGenre.readOnly = true;
+    detailPlatform.readOnly = true;
+    detailProgress.readOnly = true;
+    detailStatus.disabled = true;
 
-  if (progressBaru < 0 || progressBaru > 100) {
-    alert("Progress harus 0 - 100%");
-    return;
-  }
+    const btn = document.querySelector(".btn-edit");
 
-  // Simpan perubahan
-  buku[detailIndex].judul = judulBaru;
-  buku[detailIndex].episode = episodeBaru;
-  buku[detailIndex].genre = genreBaru;
-  buku[detailIndex].platform = platformBaru;
-  buku[detailIndex].status = statusBaru;
-  buku[detailIndex].progress = Number(progressBaru);
-
-  localStorage.setItem("buku", JSON.stringify(buku));
-
-  // Update tampilan
-  detailJudul.innerText = judulBaru;
-  detailEpisode.innerText = episodeBaru;
-  detailGenre.innerText = genreBaru;
-  detailPlatform.innerText = platformBaru;
-  detailStatus.innerText = statusBaru;
-  detailProgress.innerText = progressBaru + "%";
-
-  alert("Data berhasil diperbarui!");
+    btn.innerHTML = "Edit";
+    btn.onclick = editProgressDetail;
+    alert("Data berhasil diperbarui!");
 }
 
 window.editProgressDetail = editProgressDetail;
-
+window.simpanEdit = simpanEdit;
 
 // ================= HAPUS DETAIL BOOK ====================//
 function hapusProgressDetail() {
@@ -924,9 +911,6 @@ buku.map(item=>item.platform)
 ];
 
 totalUser.innerHTML=users.length;
-
 totalBook.innerHTML=buku.length;
-
 totalPlatform.innerHTML=platform.length;
-
 }

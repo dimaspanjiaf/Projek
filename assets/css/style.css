@@ -1097,9 +1097,6 @@ body.about-page .main-content{
   color:#555;
 }
 
-
-}
-
 .dark-btn:hover{
   transform:scale(1.03);
   background:#243252;
@@ -1178,11 +1175,9 @@ body.add-book-page .main-content {
   margin-left: 260px;          
   width: calc(100% - 260px);   
   min-height: 100vh;           
-  
   display: flex;
   justify-content: center;    
   align-items: center;        
-  
   padding: 40px;              
 }
 
@@ -1209,16 +1204,11 @@ body.add-book-page .main-content {
 .form-card input{
   width:100%;
   padding:15px;
-
   margin-bottom:18px;
-
   border:1px solid #dcdcdc;
   border-radius:12px;
-
   font-size:16px;
-
   outline:none;
-
   transition:0.3s;
 }
 
@@ -1300,7 +1290,7 @@ body.add-book-page .main-content {
 }
 
 /* =========================
-   DETAIL PAGE (KODE BARU)
+  DETAIL PAGE (KODE BARU)
 ========================= */
 
 body.detail-page {
@@ -1374,6 +1364,45 @@ body.detail-page .detail-container {
 .detail-item strong {
   color: #18243d;
   font-weight: 600;
+}
+
+/* DETAIL INPUT */
+.detail-input {
+    width: 180px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 15px;
+    text-align: right;
+    transition: all .3s ease;
+}
+
+/* Mode lihat */
+.detail-input.view {
+    border: none;
+    background: transparent;
+    padding: 0;
+    font-weight: 600;
+    color: #18243d;
+    box-shadow: none;
+    outline: none;
+    pointer-events: none;
+    cursor: default;
+}
+
+/* Mode edit */
+.detail-input.edit {
+    background: #fff;
+    border: 1px solid #d1d5db;
+    color: #18243d;
+    pointer-events: auto;
+    cursor: text;
+}
+
+.detail-input:focus {
+    outline: none;
+    border-color: #18243d;
+    box-shadow: 0 0 6px rgba(24,36,61,.2);
 }
 
 /* BUTTON AREA */

@@ -13,9 +13,7 @@
 
     <!-- SIDEBAR -->
     <div class="sidebar">
-
         <h1 class="logo">📚 MyLibrary</h1>
-
         <a href="index.html" class="menu">
             Home
         </a>
@@ -40,57 +38,81 @@
             Login
         </a>
         <button class="dark-btn" onclick="toggleDarkMode()">
-      🌙 Dark Mode
+    🌙 Dark Mode
     </button>
-
-    </div>
+</div>
 
     <!-- MAIN CONTENT -->
     <div class="main-content">
-
         <div class="detail-container">
-
             <div class="detail-card">
-
                 <h2>Detail Bacaan</h2>
-
                 <hr>
-
                 <div class="detail-item">
                     <span>📖 Judul</span>
-                    <strong id="detailJudul"></strong>
+                    <input
+                        id="detailJudul"
+                        type="text"
+                        autocomplete="off"
+                        readonly
+                        class="detail-input view">
                 </div>
 
                 <div class="detail-item">
                     <span>🎬 Episode</span>
-                    <strong id="detailEpisode"></strong>
+                    <input
+                        id="detailEpisode"
+                        type="number"
+                        min="1"
+                        autocomplete="off"
+                        readonly
+                        class="detail-input view">
                 </div>
 
                 <div class="detail-item">
                     <span>🎭 Genre</span>
-                    <strong id="detailGenre"></strong>
+                    <input
+                        id="detailGenre"
+                        type="text"
+                        autocomplete="off"
+                        readonly
+                        class="detail-input view">
                 </div>
 
                 <div class="detail-item">
                     <span>🌐 Platform</span>
-                    <strong id="detailPlatform"></strong>
+                    <input
+                        id="detailPlatform"
+                        type="text"
+                        readonly
+                        class="detail-input view">
                 </div>
 
                 <div class="detail-item">
                     <span>📊 Status Bacaan</span>
-                    <strong id="detailStatus"></strong>
+                    <select
+                        id="detailStatus"
+                        disabled
+                        class="detail-input view">
+                        <option value="Sedang Dibaca">Sedang Dibaca</option>
+                        <option value="Selesai">Selesai</option>
+                        <option value="Wishlist">Wishlist</option>
+                    </select>
                 </div>
 
                 <div class="detail-item">
                     <span>📈 Progress</span>
-                    <strong id="detailProgress"></strong>
+                    <input
+                        id="detailProgress"
+                        type="number"
+                        min="0"
+                        max="100"
+                        readonly
+                        class="detail-input view">
                 </div>
 
-            
-
-                <!-- BUTTON -->
+                <!-- BUT-->
                 <div class="aksi">
-
                     <button class="btn-edit" onclick="editProgressDetail()">
                         Edit
                     </button>
@@ -98,17 +120,12 @@
                     <button class="btn-hapus" onclick="hapusProgressDetail()">
                         Hapus
                     </button>
-
                 </div>
-
                 <a href="dashboard.html" class="btn-kembali">
                     ← Kembali ke Dashboard
                 </a>
-
             </div>
-
         </div>
-
     </div>
 
     <script src="assets/js/script.js"></script>
