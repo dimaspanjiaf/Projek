@@ -684,6 +684,7 @@ if (
         detailPlatform.innerText = "-";
         detailStatus.innerText = "-";
         detailProgress.innerText = "-";
+
     }
 }
 
@@ -700,10 +701,21 @@ function editProgressDetail() {
     detailProgress.readOnly = false;
     detailStatus.disabled = false;
 
-    const btn = document.querySelector(".btn-edit");
+    const input = document.querySelectorAll(".detail-input");
 
-    btn.innerHTML = "Simpan";
-    btn.onclick = simpanEdit;
+    input.forEach((el) => {
+        el.classList.remove("view");
+        el.classList.add("edit");
+    });
+
+    const btnEdit = document.querySelector(".btn-edit");
+    const btnHapus = document.querySelector(".btn-hapus");
+
+    btnEdit.innerHTML = "Simpan";
+    btnEdit.onclick = simpanEdit;
+
+    btnHapus.innerHTML = "Batal";
+    btnHapus.onclick = batalEdit;
 }
 
 function simpanEdit(){
@@ -731,11 +743,18 @@ function simpanEdit(){
     detailProgress.readOnly = true;
     detailStatus.disabled = true;
 
-    const btn = document.querySelector(".btn-edit");
+    const btnEdit = document.querySelector(".btn-edit");
+    const btnHapus = document.querySelector(".btn-hapus");
 
-    btn.innerHTML = "Edit";
-    btn.onclick = editProgressDetail;
+    btnEdit.innerHTML = "Edit";
+    btnEdit.onclick = editProgressDetail;
+    
+    btnHapus.innerHTML = "Hapus";
+    btnHapus.onclick = hapusProgressDetail;
+
     alert("Data berhasil diperbarui!");
+
+    window.location.href = "dashboard.html";
 }
 
 window.editProgressDetail = editProgressDetail;
