@@ -691,8 +691,20 @@ if (
 // =========================
 // EDIT DETAIL BOOK
 // =========================
+let dataSebelumEdit = null;
+
 function editProgressDetail() {
   if (detailIndex === null) return;
+  
+    // Simpan data sebelum diedit
+    dataSebelumEdit = {
+        judul: detailJudul.value,
+        episode: detailEpisode.value,
+        genre: detailGenre.value,
+        platform: detailPlatform.value,
+        status: detailStatus.value,
+        progress: detailProgress.value
+    };
 
     detailJudul.readOnly = false;
     detailEpisode.readOnly = false;
@@ -714,8 +726,44 @@ function editProgressDetail() {
     btnEdit.innerHTML = "Simpan";
     btnEdit.onclick = simpanEdit;
 
-    btnHapus.innerHTML = "Batal";
+    btnHapus.innerHTML = "Batal";           //menambahakan fitur Edit Simpan dan Batal
     btnHapus.onclick = batalEdit;
+}
+
+function batalEdit() {
+
+    if (dataSebelumEdit === null) return;
+    detailJudul.value = dataSebelumEdit.judul;
+    detailEpisode.value = dataSebelumEdit.episode;
+    detailGenre.value = dataSebelumEdit.genre;
+    detailPlatform.value = dataSebelumEdit.platform;
+    detailStatus.value = dataSebelumEdit.status;
+    detailProgress.value = dataSebelumEdit.progress;
+
+    detailJudul.readOnly = true;
+    detailEpisode.readOnly = true;
+    detailGenre.readOnly = true;
+    detailPlatform.readOnly = true;
+    detailProgress.readOnly = true;
+    detailStatus.disabled = true;
+
+    const input = document.querySelectorAll(".detail-input");
+
+    input.forEach((el) => {
+        el.classList.remove("edit");
+        el.classList.add("view");
+    });
+
+    const btnEdit = document.querySelector(".btn-edit");
+    const btnHapus = document.querySelector(".btn-hapus");
+
+    btnEdit.innerHTML = "Edit";
+    btnEdit.onclick = editProgressDetail;
+
+    btnHapus.innerHTML = "Hapus";
+    btnHapus.onclick = hapusProgressDetail;
+
+    dataSebelumEdit = null;
 }
 
 function simpanEdit(){
@@ -752,6 +800,15 @@ function simpanEdit(){
     btnHapus.innerHTML = "Hapus";
     btnHapus.onclick = hapusProgressDetail;
 
+    dataSebelumEdit = null;
+
+    const input = document.querySelectorAll(".detail-input");
+
+    input.forEach((el) => {
+        el.classList.remove("edit");
+        el.classList.add("view");
+    });
+
     alert("Data berhasil diperbarui!");
 
     window.location.href = "dashboard.html";
@@ -759,6 +816,7 @@ function simpanEdit(){
 
 window.editProgressDetail = editProgressDetail;
 window.simpanEdit = simpanEdit;
+window.batalEdit = batalEdit;
 
 // ================= HAPUS DETAIL BOOK ====================//
 function hapusProgressDetail() {
