@@ -1,4 +1,7 @@
-// ========= SEMUA HALAMAN =========
+// ========= SEMUA HALAMAN & MANAJEMEN DATA =========
+
+// Inisialisasi BroadcastChannel untuk Sinkronisasi Antar Tab (Realtime Client-Side)
+const syncChannel = new BroadcastChannel("library_sync");
 
 function getData(key) {
   return JSON.parse(localStorage.getItem(key)) || [];
@@ -6,10 +9,57 @@ function getData(key) {
 
 function saveData(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
+  
+  // Jika data buku yang berubah, kirim sinyal realtime ke tab lain
+  if (key === "buku") {
+    syncChannel.postMessage({ type: "DATA_UPDATED" });
+  }
 }
 
+// Mendengarkan sinyal dari tab lain secara Realtime
+syncChannel.onmessage = (event) => {
+  if (event.data.type === "DATA_UPDATED") {
+    console.log("Menerima sinyal realtime: Data di tab lain berubah. Memperbarui UI...");
+    
+    // Ambil data buku terbaru dari localStorage untuk tab ini
+    if (document.body.classList.contains("dashboard-page")) {
+      buku = getData("buku"); 
+      if (typeof tampilkanBuku === "function") {
+        tampilkanBuku(); // Update tabel dan counter secara realtime
+      }
+    }
+    
+    // Update counter statistik global di halaman About jika ada
+    if (document.getElementById("totalUser")) {
+      updateGlobalStats();
+    }
+  }
+};
 
-// ========= login.html =========
+// ================= PROTEKSI HALAMAN RAHASIA (ROUTE GUARD) =================
+function proteksiHalaman() {
+  // Daftar halaman yang WAJIB login terlebih dahulu sebelum masuk
+  const halamanRahasia = ["dashboard.html", "add-book.html", "detail-book.html"];
+  
+  // Ambil nama file HTML yang sedang dibuka saat ini
+  const halamanSekarang = window.location.pathname.split("/").pop();
+
+  // Jika halaman masuk dalam daftar rahasia, cek status loginnya
+  if (halamanRahasia.includes(halamanSekarang)) {
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+
+    // Jika belum login, tendang balik ke login.html
+    if (isLoggedIn !== "true") {
+      alert("Akses ditolak! Kamu harus login terlebih dahulu untuk mengakses halaman ini.");
+      window.location.href = "login.html";
+    }
+  }
+}
+// Jalankan fungsi proteksi langsung saat halaman dimuat browser
+document.addEventListener("DOMContentLoaded", proteksiHalaman);
+
+
+// ========= login.html LOGIC =========
 
 function showRegister() {
   const authContainer = document.getElementById("authContainer");
@@ -88,8 +138,7 @@ function login() {
 
     localStorage.setItem("isLoggedIn", "true");
     localStorage.setItem("currentUser", JSON.stringify(user));
-    localStorage.setItem("lastLogin", new Date().toLocaleString("id-ID")
-);
+    localStorage.setItem("lastLogin", new Date().toLocaleString("id-ID"));
 
     setTimeout(function() {
       window.location.href = "dashboard.html";
@@ -100,7 +149,7 @@ function login() {
   }
 }
 
-//  Hide Password
+// Hide / Show Password
 function togglePassword(inputId, element) {
   const passwordInput = document.getElementById(inputId);
   
@@ -110,7 +159,7 @@ function togglePassword(inputId, element) {
       element.innerText = "🙈"; 
     } else {
       passwordInput.type = "password";
-      element.innerText = "👁"; // 
+      element.innerText = "👁"; 
     }
   }
 }
@@ -123,7 +172,6 @@ function handleAuthMenu() {
   
   sidebarLinks.forEach(function(link) {
     if (link.getAttribute("href") === "login.html") {
-      
       if (isLoggedIn === "true") {
         link.innerHTML = "Log Out";
         link.setAttribute("href", "#"); 
@@ -147,433 +195,250 @@ function handleAuthMenu() {
 document.addEventListener("DOMContentLoaded", handleAuthMenu);
 
 
-
-
-// ================= DASHBOARD =================
+// ================= DASHBOARD PAGE LOGIC =================
+let buku = getData("buku");
+let dataTerhapus = null;
 
 if (document.body.classList.contains("dashboard-page")) {
 
-const reminderBox = document.getElementById("reminderBox");
-
-if (reminderBox) {
-
+  const reminderBox = document.getElementById("reminderBox");
+  if (reminderBox) {
     const terakhir = localStorage.getItem("lastRead");
-
     if (terakhir) {
-
-        const selisihHari = Math.floor(
-            (Date.now() - Number(terakhir)) /
-            (1000 * 60 * 60 * 24)
-        );
-
-        if (selisihHari >= 3) {
-
-            reminderBox.innerHTML =
-            "🔔 Sudah " + selisihHari +
-            " hari sejak terakhir menambahkan bacaan. Yuk lanjut membaca!";
-
-        } else {
-
-            reminderBox.innerHTML =
-            "📖 Selamat! Kamu masih aktif mencatat bacaan.";
-
-        }
-
+      const selisihHari = Math.floor((Date.now() - Number(terakhir)) / (1000 * 60 * 60 * 24));
+      if (selisihHari >= 3) {
+        reminderBox.innerHTML = `🔔 Sudah ${selisihHari} hari sejak terakhir menambahkan bacaan. Yuk lanjut membaca!`;
+      } else {
+        reminderBox.innerHTML = "📖 Selamat! Kamu masih aktif mencatat bacaan.";
+      }
     } else {
-
-        reminderBox.innerHTML =
-        "📚 Tambahkan buku pertamamu.";
-
+      reminderBox.innerHTML = "📚 Tambahkan buku pertamamu.";
     }
+  }
 
-}
-
-const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-const teksSapaan = document.getElementById("teksSapaan");
-
-if (teksSapaan) {
-
+  const teksSapaan = document.getElementById("teksSapaan");
+  if (teksSapaan) {
     const jam = new Date().getHours();
     let salam = "";
 
-    if (jam >= 4 && jam < 11) {
-        salam = "🌞 Selamat Pagi";
-    } else if (jam >= 11 && jam < 15) {
-        salam = "☀️ Selamat Siang";
-    } else if (jam >= 15 && jam < 18) {
-        salam = "🌇 Selamat Sore";
-    } else {
-        salam = "🌙 Selamat Malam";
-    }
+    if (jam >= 4 && jam < 11) salam = "🌞 Selamat Pagi";
+    else if (jam >= 11 && jam < 15) salam = "☀️ Selamat Siang";
+    else if (jam >= 15 && jam < 18) salam = "🌇 Selamat Sore";
+    else salam = "🌙 Selamat Malam";
 
     const lastLogin = localStorage.getItem("lastLogin");
-
     const lastLoginElement = document.getElementById("lastLogin");
-
-      if (lastLoginElement) {
-
-      if (lastLogin) {
-        lastLoginElement.innerText = lastLogin;
-      } else {
-        lastLoginElement.innerText = "Belum pernah login";
-      }
-
-}
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-
-    if (currentUser && currentUser.name) {
-        teksSapaan.innerText = `${salam}, ${currentUser.name} 👋`;
-    } else {
-        teksSapaan.innerText = `${salam} 👋`;
+    if (lastLoginElement) {
+      lastLoginElement.innerText = lastLogin || "Belum pernah login";
     }
-}
 
-  let buku = JSON.parse(localStorage.getItem("buku")) || [];
-  let dataTerhapus = null;
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (currentUser && currentUser.name) {
+      teksSapaan.innerText = `${salam}, ${currentUser.name} 👋`;
+    } else {
+      teksSapaan.innerText = `${salam} 👋`;
+    }
+  }
 
+  // RENDER UTAMA TABEL DASHBOARD (Ditingkatkan dengan input realtime)
   const tbody = document.getElementById("data-buku");
 
   function tampilkanBuku(data = buku) {
-
+    if (!tbody) return;
     tbody.innerHTML = "";
 
     if (data.length === 0) {
-
       tbody.innerHTML = `
         <tr>
-          <td colspan="6" style="text-align:center;">
-            Belum ada buku ditambahkan
-          </td>
+          <td colspan="7" style="text-align:center;">Belum ada buku ditambahkan</td>
         </tr>
       `;
-
+      updateCard();
+      renderChart();
       return;
     }
 
     data.forEach((item, index) => {
-
+      const actualIndex = item.originalIndex !== undefined ? item.originalIndex : index;
+      
       tbody.innerHTML += `
-  <tr>
-
-    <td>
-        <strong>${item.judul}</strong>
-    </td>
-
-    <td>
-        ${item.episode}
-    </td>
-
-    <td>
-        ${item.genre}
-    </td>
-
-    <td>
-        ${item.platform}
-    </td>
-
-    <td>
-        <span class="badge reading">
-            ${item.status}
-        </span>
-    </td>
-
-    <td>
-        <div class="progress-wrap">
-
-            ${item.progress}%
-
-            <div class="progress-bar">
-                <div
-                    class="progress"
-                    style="width:${item.progress}%">
-                </div>
+        <tr>
+          <td><strong>${item.judul}</strong></td>
+          <td>${item.episode}</td>
+          <td>${item.genre}</td>
+          <td><span class="badge-platform">${item.platform || "-"}</span></td>
+          <td>
+            <select onchange="updateStatusRealtime(${actualIndex}, this.value)" class="status-select">
+              <option value="Sedang Dibaca" ${item.status === "Sedang Dibaca" ? "selected" : ""}>Sedang Dibaca</option>
+              <option value="Selesai" ${item.status === "Selesai" ? "selected" : ""}>Selesai</option>
+              <option value="Wishlist" ${item.status === "Wishlist" ? "selected" : ""}>Wishlist</option>
+            </select>
+          </td>
+          <td>
+            <div class="progress-wrap" style="gap: 5px; display: flex; flex-direction: column;">
+              <div style="display:flex; align-items:center; gap:3px;">
+                <input type="number" value="${item.progress}" min="0" max="100" 
+                  onchange="updateProgressRealtime(${actualIndex}, this.value)" class="progress-inline-input">%
+              </div>
+              <div class="progress-bar">
+                <div class="progress" style="width:${item.progress}%"></div>
+              </div>
             </div>
-
-        </div>
-    </td>
-
-    <td class="actions">
-
-        <button
-            class="btn-detail"
-            onclick="detailBuku(${item.originalIndex !== undefined ? item.originalIndex : index})">
-            Detail
-        </button>
-
-        <button
-            class="btn-delete"
-            onclick="hapusBuku(${item.originalIndex !== undefined ? item.originalIndex : index})">
-            Delete
-        </button>
-
-    </td>
-
-  </tr>
+          </td>
+          <td class="actions">
+            <button class="btn-detail" onclick="detailBuku(${actualIndex})">Detail</button>
+            <button class="btn-delete" onclick="hapusBuku(${actualIndex})">Delete</button>
+          </td>
+        </tr>
       `;
-
     });
 
     updateCard();
     renderChart();
   }
+  window.tampilkanBuku = tampilkanBuku;
 
-    window.detailBuku = detailBuku;
-
-  // ================= UPDATE CARD =================
-
+  // ================= UPDATE STATS CARD =================
   function updateCard() {
+    if(!document.getElementById("totalBuku")) return;
 
-    document.getElementById("totalBuku").innerText =
-      buku.length;
+    document.getElementById("totalBuku").innerText = buku.length;
+    const selesai = buku.filter(item => item.status === "Selesai").length;
+    const dibaca = buku.filter(item => item.status === "Sedang Dibaca").length;
+    const wishlist = buku.filter(item => item.status === "Wishlist").length;
 
-    const selesai =
-      buku.filter(item => item.status === "Selesai").length;
-
-    const dibaca =
-      buku.filter(item => item.status === "Sedang Dibaca").length;
-
-    const wishlist =
-      buku.filter(item => item.status === "Wishlist").length;
-
-    document.getElementById("selesaiBuku").innerText =
-      selesai;
-
-    document.getElementById("dibacaBuku").innerText =
-      dibaca;
-
-    document.getElementById("wishlistBuku").innerText =
-      wishlist;
+    document.getElementById("selesaiBuku").innerText = selesai;
+    document.getElementById("dibacaBuku").innerText = dibaca;
+    document.getElementById("wishlistBuku").innerText = wishlist;
   }
 
-  // ================= HAPUS =================
+  // ================= REALTIME INLINE UPDATE SYSTEM =================
+  window.updateStatusRealtime = function(index, statusBaru) {
+    buku[index].status = statusBaru;
+    if (statusBaru === "Selesai") {
+      buku[index].progress = 100;
+    }
+    saveData("buku", buku);
+    tampilkanBuku();
+  };
 
+  window.updateProgressRealtime = function(index, progressBaru) {
+    let progValue = Math.min(100, Math.max(0, parseInt(progressBaru) || 0));
+    buku[index].progress = progValue;
+    if (progValue === 100) {
+      buku[index].status = "Selesai";
+    } else if (progValue < 100 && buku[index].status === "Selesai") {
+      buku[index].status = "Sedang Dibaca";
+    }
+    saveData("buku", buku);
+    tampilkanBuku();
+  };
+
+  // ================= ACTION HAPUS & UNDO =================
   function hapusBuku(index) {
-
-    const yakin = confirm(
-      "Yakin ingin menghapus buku?"
-    );
-
-    if (yakin) {
-
+    if (confirm("Yakin ingin menghapus buku?")) {
       dataTerhapus = {
         data: buku[index],
         index: index
       };
 
       buku.splice(index, 1);
-
-      localStorage.setItem(
-        "buku",
-        JSON.stringify(buku)
-      );
-
-      renderChart();
-      updateCard();
+      saveData("buku", buku);
 
       tampilkanUndo();
-
       tampilkanBuku();
     }
   }
-
   window.hapusBuku = hapusBuku;
 
   function tampilkanUndo() {
-
-  const undoBox =
-    document.getElementById("undoBox");
-
-  undoBox.innerHTML = `
-
-    <div class="undo-alert">
-
-      Buku berhasil dihapus
-
-      <button onclick="undoHapus()">
-        Undo
-      </button>
-
-    </div>
-
-  `;
-}
-
-function undoHapus() {
-
-  if (dataTerhapus !== null) {
-
-    buku.splice(
-      dataTerhapus.index,
-      0,
-      dataTerhapus.data
-    );
-
-    localStorage.setItem(
-      "buku",
-      JSON.stringify(buku)
-    );
-
-    renderChart();
-    updateCard();
-
-    document.getElementById(
-      "undoBox"
-    ).innerHTML = "";
-
-    dataTerhapus = null;
-
-    tampilkanBuku();
-
-    renderChart();
-    updateCard();
+    const undoBox = document.getElementById("undoBox");
+    if (!undoBox) return;
+    undoBox.innerHTML = `
+      <div class="undo-alert">
+        Buku berhasil dihapus
+        <button onclick="undoHapus()">Undo</button>
+      </div>
+    `;
   }
-}
 
-window.undoHapus = undoHapus;
+  function undoHapus() {
+    if (dataTerhapus !== null) {
+      buku.splice(dataTerhapus.index, 0, dataTerhapus.data);
+      saveData("buku", buku);
+
+      const undoBox = document.getElementById("undoBox");
+      if (undoBox) undoBox.innerHTML = "";
+
+      dataTerhapus = null;
+      tampilkanBuku();
+    }
+  }
+  window.undoHapus = undoHapus;
 
   function detailBuku(index) {
+    window.location.href = `detail-book.html?id=${index}`;
+  }
+  window.detailBuku = detailBuku;
 
-  window.location.href =
-    `detail-book.html?id=${index}`;
-}
-
-window.detailBuku = detailBuku;
-
-  // ================= SEARCH =================
-
+  // ================= SEARCH BUKU =================
   function searchBuku() {
-
-    const keyword =
-      document.getElementById("searchInput")
-      .value
-      .toLowerCase();
-
-const hasil = buku
+    const keyword = document.getElementById("searchInput").value.toLowerCase();
+    const hasil = buku
       .map((item, index) => ({ ...item, originalIndex: index }))
       .filter(item => item.judul.toLowerCase().includes(keyword));
-
     tampilkanBuku(hasil);
   }
-
   window.searchBuku = searchBuku;
 
-  
-  // ================= CHART =================
+  // ================= CHART LOGIC =================
+  let genreChartInstance;
+  let progressChartInstance;
 
-let genreChartInstance;
-let progressChartInstance;
+  function renderChart() {
+    const canvasGenre = document.getElementById("genreChart");
+    const canvasProgress = document.getElementById("progressChart");
+    if (!canvasGenre || !canvasProgress) return;
 
-function renderChart() {
+    const selesai = buku.filter(item => item.status === "Selesai").length;
+    const dibaca = buku.filter(item => item.status === "Sedang Dibaca").length;
+    const wishlist = buku.filter(item => item.status === "Wishlist").length;
 
-  const selesai =
-    buku.filter(item => item.status === "Selesai").length;
+    if (genreChartInstance) genreChartInstance.destroy();
+    if (progressChartInstance) progressChartInstance.destroy();
 
-  const dibaca =
-    buku.filter(item => item.status === "Sedang Dibaca").length;
-
-  const wishlist =
-    buku.filter(item => item.status === "Wishlist").length;
-
-  // HAPUS CHART LAMA
-  if (genreChartInstance) {
-    genreChartInstance.destroy();
-  }
-
-  if (progressChartInstance) {
-    progressChartInstance.destroy();
-  }
-
-  // DOUGHNUT CHART
-  genreChartInstance = new Chart(
-    document.getElementById("genreChart"),
-    {
-
+    genreChartInstance = new Chart(canvasGenre, {
       type: "doughnut",
-
       data: {
-
-        labels: [
-          "Selesai",
-          "Sedang Dibaca",
-          "Wishlist"
-        ],
-
+        labels: ["Selesai", "Sedang Dibaca", "Wishlist"],
         datasets: [{
-          data: [
-            selesai,
-            dibaca,
-            wishlist
-          ],
-
-          backgroundColor: [
-            "#4b5563",
-            "#6b7280",
-            "#9ca3af"
-          ]
+          data: [selesai, dibaca, wishlist],
+          backgroundColor: ["#4b5563", "#6b7280", "#9ca3af"]
         }]
       }
-    }
-  );
+    });
 
-  // BAR CHART
-  progressChartInstance = new Chart(
-    document.getElementById("progressChart"),
-    {
-
+    progressChartInstance = new Chart(canvasProgress, {
       type: "bar",
-
       data: {
-
         labels: buku.map(item => item.judul),
-
         datasets: [{
-
           label: "Progress",
-
           data: buku.map(item => item.progress),
-
           backgroundColor: "#6b7280",
-
           borderRadius: 10
         }]
       }
-    }
-  );
+    });
+  }
+
+  // Trigger render awal saat DOM siap
+  document.addEventListener("DOMContentLoaded", () => tampilkanBuku());
 }
-  tampilkanBuku();
-}
 
 
-
-// =========================
-// ADD BOOK
-// =========================
-
-const judulInput =
-  document.getElementById("judul");
-
-const episodeInput =
-  document.getElementById("episode");
-
-const genreInput =
-  document.getElementById("genre");
-
-const platformInput =
-  document.getElementById("platform");
-
-const statusInput =
-  document.getElementById("status");
-
-const progressInput =
-  document.getElementById("progress");
-
-
-// =========================
-// TAMBAH DATA
-// =========================
-
+// ================= TAMBAH DATA (add-book.html) =================
 function tambahData() {
-
   const judulInput = document.getElementById("judul");
   const episodeInput = document.getElementById("episode");
   const genreInput = document.getElementById("genre");
@@ -581,9 +446,10 @@ function tambahData() {
   const statusInput = document.getElementById("status");
   const progressInput = document.getElementById("progress");
 
-  let buku = JSON.parse(localStorage.getItem("buku")) || [];
+  if (!judulInput) return; // Mencegah error jika dipanggil di luar halaman add-book
 
-  // Validasi input
+  let daftarBuku = getData("buku");
+
   if (
     judulInput.value.trim() === "" ||
     episodeInput.value.trim() === "" ||
@@ -596,22 +462,16 @@ function tambahData() {
     return;
   }
 
-  // Validasi episode
   if (Number(episodeInput.value) < 0) {
     alert("Episode tidak boleh kurang dari 0!");
     return;
   }
 
-  // Validasi progress
-  if (
-    Number(progressInput.value) < 0 ||
-    Number(progressInput.value) > 100
-  ) {
+  if (Number(progressInput.value) < 0 || Number(progressInput.value) > 100) {
     alert("Progress harus berada di antara 0% hingga 100%!");
     return;
   }
 
-  // Data baru
   const dataBaru = {
     judul: judulInput.value,
     episode: episodeInput.value,
@@ -621,37 +481,17 @@ function tambahData() {
     progress: Number(progressInput.value)
   };
 
-  // Simpan ke localStorage
-  buku.push(dataBaru);
-  localStorage.setItem("buku", JSON.stringify(buku));
+  daftarBuku.push(dataBaru);
+  saveData("buku", daftarBuku);
   localStorage.setItem("lastRead", Date.now());
 
   alert("Buku berhasil ditambahkan!");
-
-  // Kosongkan form
-  judulInput.value = "";
-  episodeInput.value = "";
-  genreInput.value = "";
-  platformInput.value = "";
-  statusInput.value = "";
-  progressInput.value = "";
-
-  // Pindah ke dashboard
   window.location.href = "dashboard.html";
 }
-
-// GLOBAL
 window.tambahData = tambahData;
 
 
-
-// =========================
-// DETAIL BOOK
-// =========================
-
-const buku =
-  JSON.parse(localStorage.getItem("buku")) || [];
-
+// ================= DETAIL & EDIT BUKU (detail-book.html) =================
 const urlParams = new URLSearchParams(window.location.search);
 const detailIndex = urlParams.get("id");
 const detailJudul = document.getElementById("detailJudul");
@@ -661,184 +501,119 @@ const detailPlatform = document.getElementById("detailPlatform");
 const detailStatus = document.getElementById("detailStatus");
 const detailProgress = document.getElementById("detailProgress");
 
-if (
-    detailIndex !== null &&
-    detailJudul &&
-    detailEpisode
-) {
-
-    const data = buku[detailIndex];
-
-    if (data) {
-        detailJudul.value = data.judul;
-        detailEpisode.value = data.episode;
-        detailGenre.value = data.genre;
-        detailPlatform.value = data.platform;
-        detailStatus.value = data.status;
-        detailProgress.value = data.progress;
-    } else {
-
-        detailJudul.innerText = "Data tidak ditemukan";
-        detailEpisode.innerText = "-";
-        detailGenre.innerText = "-";
-        detailPlatform.innerText = "-";
-        detailStatus.innerText = "-";
-        detailProgress.innerText = "-";
-
-    }
+let daftarBukuDetail = getData("buku");
+if (detailIndex !== null && detailJudul && detailEpisode) {
+  const data = daftarBukuDetail[detailIndex];
+  if (data) {
+    detailJudul.value = data.judul;
+    detailEpisode.value = data.episode;
+    detailGenre.value = data.genre;
+    detailPlatform.value = data.platform;
+    detailStatus.value = data.status;
+    detailProgress.value = data.progress;
+  }
 }
 
-// =========================
-// EDIT DETAIL BOOK
-// =========================
 let dataSebelumEdit = null;
 
 function editProgressDetail() {
   if (detailIndex === null) return;
   
-    // Simpan data sebelum diedit
-    dataSebelumEdit = {
-        judul: detailJudul.value,
-        episode: detailEpisode.value,
-        genre: detailGenre.value,
-        platform: detailPlatform.value,
-        status: detailStatus.value,
-        progress: detailProgress.value
-    };
+  dataSebelumEdit = {
+    judul: detailJudul.value,
+    episode: detailEpisode.value,
+    genre: detailGenre.value,
+    platform: detailPlatform.value,
+    status: detailStatus.value,
+    progress: detailProgress.value
+  };
 
-    detailJudul.readOnly = false;
-    detailEpisode.readOnly = false;
-    detailGenre.readOnly = false;
-    detailPlatform.readOnly = false;
-    detailProgress.readOnly = false;
-    detailStatus.disabled = false;
+  detailJudul.readOnly = false;
+  detailEpisode.readOnly = false;
+  detailGenre.readOnly = false;
+  detailPlatform.readOnly = false;
+  detailProgress.readOnly = false;
+  detailStatus.disabled = false;
 
-    const input = document.querySelectorAll(".detail-input");
+  document.querySelectorAll(".detail-input").forEach((el) => {
+    el.classList.remove("view");
+    el.classList.add("edit");
+  });
 
-    input.forEach((el) => {
-        el.classList.remove("view");
-        el.classList.add("edit");
-    });
-
-    const btnEdit = document.querySelector(".btn-edit");
-    const btnHapus = document.querySelector(".btn-hapus");
-
-    btnEdit.innerHTML = "Simpan";
-    btnEdit.onclick = simpanEdit;
-
-    btnHapus.innerHTML = "Batal";           //menambahakan fitur Edit Simpan dan Batal
-    btnHapus.onclick = batalEdit;
+  const btnEdit = document.querySelector(".btn-edit");
+  const btnHapus = document.querySelector(".btn-hapus");
+  if(btnEdit) { btnEdit.innerHTML = "Simpan"; btnEdit.onclick = simpanEdit; }
+  if(btnHapus) { btnHapus.innerHTML = "Batal"; btnHapus.onclick = batalEdit; }
 }
 
 function batalEdit() {
+  if (dataSebelumEdit === null) return;
+  detailJudul.value = dataSebelumEdit.judul;
+  detailEpisode.value = dataSebelumEdit.episode;
+  detailGenre.value = dataSebelumEdit.genre;
+  detailPlatform.value = dataSebelumEdit.platform;
+  detailStatus.value = dataSebelumEdit.status;
+  detailProgress.value = dataSebelumEdit.progress;
 
-    if (dataSebelumEdit === null) return;
-    detailJudul.value = dataSebelumEdit.judul;
-    detailEpisode.value = dataSebelumEdit.episode;
-    detailGenre.value = dataSebelumEdit.genre;
-    detailPlatform.value = dataSebelumEdit.platform;
-    detailStatus.value = dataSebelumEdit.status;
-    detailProgress.value = dataSebelumEdit.progress;
-
-    detailJudul.readOnly = true;
-    detailEpisode.readOnly = true;
-    detailGenre.readOnly = true;
-    detailPlatform.readOnly = true;
-    detailProgress.readOnly = true;
-    detailStatus.disabled = true;
-
-    const input = document.querySelectorAll(".detail-input");
-
-    input.forEach((el) => {
-        el.classList.remove("edit");
-        el.classList.add("view");
-    });
-
-    const btnEdit = document.querySelector(".btn-edit");
-    const btnHapus = document.querySelector(".btn-hapus");
-
-    btnEdit.innerHTML = "Edit";
-    btnEdit.onclick = editProgressDetail;
-
-    btnHapus.innerHTML = "Hapus";
-    btnHapus.onclick = hapusProgressDetail;
-
-    dataSebelumEdit = null;
+  kunciFormDetail();
 }
 
 function simpanEdit(){
-    if(detailProgress.value < 0 || detailProgress.value > 100){
-        alert("Progress harus 0-100%");
-        return;
-    }
+  if(detailProgress.value < 0 || detailProgress.value > 100){
+    alert("Progress harus 0-100%");
+    return;
+  }
 
-    buku[detailIndex].judul = detailJudul.value;
-    buku[detailIndex].episode = detailEpisode.value;
-    buku[detailIndex].genre = detailGenre.value;
-    buku[detailIndex].platform = detailPlatform.value;
-    buku[detailIndex].status = detailStatus.value;
-    buku[detailIndex].progress = Number(detailProgress.value);
+  let localBuku = getData("buku");
+  localBuku[detailIndex].judul = detailJudul.value;
+  localBuku[detailIndex].episode = detailEpisode.value;
+  localBuku[detailIndex].genre = detailGenre.value;
+  localBuku[detailIndex].platform = detailPlatform.value;
+  localBuku[detailIndex].status = detailStatus.value;
+  localBuku[detailIndex].progress = Number(detailProgress.value);
 
-    localStorage.setItem(
-        "buku",
-        JSON.stringify(buku)
-    );
+  saveData("buku", localBuku);
+  kunciFormDetail();
+  alert("Data berhasil diperbarui!");
+  window.location.href = "dashboard.html";
+}
 
-    detailJudul.readOnly = true;
-    detailEpisode.readOnly = true;
-    detailGenre.readOnly = true;
-    detailPlatform.readOnly = true;
-    detailProgress.readOnly = true;
-    detailStatus.disabled = true;
+function kunciFormDetail() {
+  detailJudul.readOnly = true;
+  detailEpisode.readOnly = true;
+  detailGenre.readOnly = true;
+  detailPlatform.readOnly = true;
+  detailProgress.readOnly = true;
+  detailStatus.disabled = true;
 
-    const btnEdit = document.querySelector(".btn-edit");
-    const btnHapus = document.querySelector(".btn-hapus");
+  document.querySelectorAll(".detail-input").forEach((el) => {
+    el.classList.remove("edit");
+    el.classList.add("view");
+  });
 
-    btnEdit.innerHTML = "Edit";
-    btnEdit.onclick = editProgressDetail;
-    
-    btnHapus.innerHTML = "Hapus";
-    btnHapus.onclick = hapusProgressDetail;
+  const btnEdit = document.querySelector(".btn-edit");
+  const btnHapus = document.querySelector(".btn-hapus");
+  if(btnEdit) { btnEdit.innerHTML = "Edit"; btnEdit.onclick = editProgressDetail; }
+  if(btnHapus) { btnHapus.innerHTML = "Hapus"; btnHapus.onclick = hapusProgressDetail; }
+  dataSebelumEdit = null;
+}
 
-    dataSebelumEdit = null;
+function hapusProgressDetail() {
+  if (detailIndex === null) return;
+  if (!confirm("Yakin ingin menghapus buku ini?")) return;
 
-    const input = document.querySelectorAll(".detail-input");
+  let localBuku = getData("buku");
+  localBuku.splice(detailIndex, 1);
+  saveData("buku", localBuku);
 
-    input.forEach((el) => {
-        el.classList.remove("edit");
-        el.classList.add("view");
-    });
-
-    alert("Data berhasil diperbarui!");
-
-    window.location.href = "dashboard.html";
+  alert("Data berhasil dihapus!");
+  window.location.href = "dashboard.html";
 }
 
 window.editProgressDetail = editProgressDetail;
 window.simpanEdit = simpanEdit;
 window.batalEdit = batalEdit;
-
-// ================= HAPUS DETAIL BOOK ====================//
-function hapusProgressDetail() {
-
-  if (detailIndex === null) return;
-
-  const yakin = confirm("Yakin ingin menghapus buku ini?");
-
-  if (!yakin) return;
-
-  buku.splice(detailIndex, 1);
-
-  localStorage.setItem("buku", JSON.stringify(buku));
-
-  alert("Data berhasil dihapus!");
-
-  window.location.href = "dashboard.html";
-}
-
 window.hapusProgressDetail = hapusProgressDetail;
-
-
 
 
 // ================= DARK MODE =================
@@ -854,140 +629,87 @@ function toggleDarkMode() {
     localStorage.setItem("theme", "light");
   }
 }
+window.toggleDarkMode = toggleDarkMode;
 
-window.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
   const theme = localStorage.getItem("theme");
   const btn = document.querySelector(".dark-btn");
-
   if (theme === "dark") {
     document.body.classList.add("dark-mode");
     if (btn) btn.innerHTML = "☀️ Light Mode";
   }
 });
 
+
 // ================= CLOCK =================
 function updateClock(){
+  const clock = document.getElementById("clock");
+  if(!clock) return;
 
-const clock=document.getElementById("clock");
-
-if(!clock)return;
-
-const now=new Date();
-
-clock.innerHTML=
-
-now.toLocaleTimeString("id-ID")+"<br>"+
-
-now.toLocaleDateString("id-ID",{
-
-weekday:"long",
-
-day:"numeric",
-
-month:"long",
-
-year:"numeric"
-
-});
-
+  const now = new Date();
+  clock.innerHTML = now.toLocaleTimeString("id-ID") + "<br>" +
+    now.toLocaleDateString("id-ID", {
+      weekday: "long", day: "numeric", month: "long", year: "numeric"
+    });
 }
-
-setInterval(updateClock,1000);
-
-updateClock();
+setInterval(updateClock, 1000);
+document.addEventListener("DOMContentLoaded", updateClock);
 
 
 // ================= PASSWORD STRENGTH =================
-
 function cekPassword(){
+  const password = document.getElementById("regPass");
+  const hasil = document.getElementById("passwordStrength");
+  if(!password || !hasil) return;
 
-    const password =
-    document.getElementById("regPass");
+  const value = password.value;
+  if(value.length == 0){
+    hasil.innerHTML = "";
+    return;
+  }
 
-    const hasil =
-    document.getElementById("passwordStrength");
-
-    if(!password || !hasil) return;
-
-    const value=password.value;
-
-    if(value.length==0){
-
-        hasil.innerHTML="";
-        return;
-
-    }
-
-    if(value.length<6){
-
-        hasil.innerHTML="🔴 Password Lemah";
-        hasil.style.color="red";
-
-    }
-    else if(value.length<8){
-
-        hasil.innerHTML="🟡 Password Sedang";
-        hasil.style.color="orange";
-
-    }
-    else{
-
-        hasil.innerHTML="🟢 Password Kuat";
-        hasil.style.color="green";
-
-    }
-
+  if(value.length < 6){
+    hasil.innerHTML = "Password Lemah";
+    hasil.style.color = "red";
+  } else if(value.length < 8){
+    hasil.innerHTML = "Password Sedang";
+    hasil.style.color = "orange";
+  } else {
+    hasil.innerHTML = "Password Kuat";
+    hasil.style.color = "green";
+  }
 }
+window.cekPassword = cekPassword;
 
 
 // ================= CAPS LOCK WARNING =================
-
 function cekCaps(e){
+  const warning = document.getElementById("capsWarning");
+  if(!warning) return;
 
-const warning=
-document.getElementById("capsWarning");
-
-if(!warning) return;
-
-if(e.getModifierState("CapsLock")){
-
-warning.innerHTML="⚠ Caps Lock aktif";
-
+  if(e.getModifierState("CapsLock")){
+    warning.innerHTML = "⚠ Caps Lock aktif";
+  } else {
+    warning.innerHTML = "";
+  }
 }
-else{
+window.cekCaps = cekCaps;
 
-warning.innerHTML="";
 
+// ================= GLOBAL STATS COUNTER (ABOUT PAGE) =================
+function updateGlobalStats() {
+  const totalUser = document.getElementById("totalUser");
+  const totalBook = document.getElementById("totalBook");
+  const totalPlatform = document.getElementById("totalPlatform");
+
+  if (totalUser) {
+    const users = getData("users");
+    const localBuku = getData("buku");
+    const platform = [...new Set(localBuku.map(item => item.platform).filter(Boolean))];
+
+    totalUser.innerHTML = users.length;
+    totalBook.innerHTML = localBuku.length;
+    totalPlatform.innerHTML = platform.length;
+  }
 }
-
-}
-
-
-// ================= DASHBOARD STATS =================
-const totalUser =
-document.getElementById("totalUser");
-
-const totalBook =
-document.getElementById("totalBook");
-
-const totalPlatform =
-document.getElementById("totalPlatform");
-
-if(totalUser){
-
-const users=
-JSON.parse(localStorage.getItem("users"))||[];
-
-const buku=
-JSON.parse(localStorage.getItem("buku"))||[];
-
-const platform=[
-...new Set(
-buku.map(item=>item.platform)
-)
-];
-
-totalUser.innerHTML=users.length;
-totalBook.innerHTML=buku.length;
-totalPlatform.innerHTML=platform.length;
-}
+document.addEventListener("DOMContentLoaded", updateGlobalStats);
