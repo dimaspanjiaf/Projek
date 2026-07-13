@@ -212,7 +212,11 @@ if (document.body.classList.contains("dashboard-page")) {
         reminderBox.innerHTML = "📖 Selamat! Kamu masih aktif mencatat bacaan.";
       }
     } else {
-      reminderBox.innerHTML = "📚 Tambahkan buku pertamamu.";
+      reminderBox.innerHTML = `
+    <a href="add-book.html" class="first-book-link">
+        📚 Tambahkan buku pertamamu
+    </a>
+`;
     }
   }
 
