@@ -1796,3 +1796,58 @@ color:#777;
     background:#243252;
     transform:translateY(-2px);
 }
+/* ===========================
+   QUICK ACTION
+=========================== */
+
+.quick-actions{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:18px;
+    margin-bottom:25px;
+}
+
+.quick-card{
+    display:flex;
+    align-items:center;
+    gap:15px;
+
+    background:#fff;
+    padding:20px;
+
+    border-radius:18px;
+
+    color:#18243d;
+    text-decoration:none;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.06);
+
+    transition:.3s;
+}
+
+.quick-card span{
+    font-size:34px;
+}
+
+.quick-card h4{
+    margin-bottom:5px;
+    font-size:18px;
+}
+
+.quick-card p{
+    font-size:14px;
+    color:#666;
+}
+
+.quick-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 15px 30px rgba(0,0,0,.12);
+}
+
+body.dark-mode .quick-card{
+    background:#1e1e1e;
+}
+
+body.dark-mode .quick-card p{
+    color:#cbd5e1;
+}

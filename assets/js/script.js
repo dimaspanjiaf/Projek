@@ -871,3 +871,18 @@ return huruf.toUpperCase();
 }
 
 window.capitalizeJudul=capitalizeJudul;
+
+function filterWishlist(){
+
+    const search = document.getElementById("searchInput");
+
+    search.value = "wishlist";
+
+    searchBuku();
+
+    document.getElementById("tableBuku")
+        .scrollIntoView({
+            behavior:"smooth"
+        });
+
+}
