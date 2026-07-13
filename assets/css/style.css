@@ -1851,3 +1851,73 @@ body.dark-mode .quick-card{
 body.dark-mode .quick-card p{
     color:#cbd5e1;
 }
+/* ==========================
+      PROGRESS RING
+========================== */
+
+.progress-card{
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+}
+
+.progress-ring{
+
+    position:relative;
+
+    width:220px;
+    height:220px;
+
+    margin:20px auto;
+
+}
+
+.progress-ring canvas{
+
+    width:220px !important;
+    height:220px !important;
+
+}
+
+.progress-center{
+
+    position:absolute;
+
+    top:50%;
+    left:50%;
+
+    transform:translate(-50%,-50%);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    flex-direction:column;
+
+}
+
+.progress-center span{
+
+    font-size:34px;
+
+    font-weight:bold;
+
+    color:#18243d;
+
+}
+
+.progress-card p{
+
+    color:#666;
+
+    margin-top:15px;
+
+}
+
+body.dark-mode .progress-center span{
+
+    color:white;
+
+}

@@ -315,24 +315,65 @@ if (document.body.classList.contains("dashboard-page")) {
     document.getElementById("dibacaBuku").innerText = dibaca;
     document.getElementById("wishlistBuku").innerText = wishlist;
 
-    const rata=document.getElementById("averageProgress");
+   const rata = document.getElementById("averageProgress");
+const canvas = document.getElementById("averageProgressChart");
 
-    if(rata){
-    if(buku.length==0){
-    rata.innerHTML="0%";
+let average = 0;
 
-    }else{
-    const total=buku.reduce(function(total,item){
-    return total+Number(item.progress);
-    },0);
+if (buku.length > 0) {
+    const total = buku.reduce(function(total, item) {
+        return total + Number(item.progress);
+    }, 0);
 
-    rata.innerHTML=
-    Math.round(total/buku.length)+"%";
+    average = Math.round(total / buku.length);
+}
 
+if (rata) {
+    rata.innerHTML = average + "%";
+}
+
+if (canvas) {
+
+    if (averageProgressChartInstance) {
+        averageProgressChartInstance.destroy();
     }
 
-    }
+    averageProgressChartInstance = new Chart(canvas, {
+
+        type: "doughnut",
+
+        data: {
+            datasets: [{
+                data: [average, 100 - average],
+                backgroundColor: [
+                    "#18243d",
+                    "#e5e7eb"
+                ],
+                borderWidth: 0
+            }]
+        },
+
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+
+            cutout: "78%",
+
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: false
+                }
+            }
+        }
+
+    });
+
+}
   }
+  
 
   // ================= REALTIME INLINE UPDATE SYSTEM =================
   window.updateStatusRealtime = function(index, statusBaru) {
@@ -417,6 +458,7 @@ if (document.body.classList.contains("dashboard-page")) {
   let genreChartInstance;
   let progressChartInstance;
   let platformChartInstance;
+  let averageProgressChartInstance;
 
   function renderChart() {
     const canvasGenre = document.getElementById("genreChart");
