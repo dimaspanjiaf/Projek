@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Profile User | MyLibrary</title>
+
+        <link rel="stylesheet" href="assets/css/style.css">
+
+        <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    </head>
+    <body class="profile-page">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h1 class="logo">📚 MyLibrary</h1>
+
+        <a href="index.html" class="menu">
+            Home
+        </a>
+
+        <a href="dashboard.html" class="menu">
+            Dashboard
+        </a>
+
+        <a href="add-book.html" class="menu">
+            Tambah Buku
+        </a>
+
+        <a href="about.html" class="menu">
+            About
+        </a>
+
+        <a href="profile.html" class="menu active">
+            Profile
+        </a>
+
+        <a href="login.html" class="menu">
+            Login
+        </a>
+        
+        <button class="dark-btn" onclick="toggleDarkMode()">
+            🌙 Dark Mode
+         </button>
+
+    </div>
+
+        <div class="main">
+
+            <h1>
+                <i class="fas fa-user-circle"></i>
+                Profile User
+            </h1>
+
+            <p>
+                Kelola informasi akun dan preferensi membaca Anda.
+            </p>
+
+            <section class="profile-card">
+
+                <div class="profile-left">
+
+                    <img
+                    id="previewFoto"
+                    src="assets/image/default-profile.png"
+                    alt="Profile">
+
+                    <input
+                    type="file"
+                    id="fotoProfile"
+                    accept="image/*">
+
+                    <button id="btnUpload">
+                        <i class="fas fa-upload"></i>
+                        Upload Foto
+                    </button>
+
+                </div>
+
+                <div class="profile-right">
+
+                    <div class="form-group">
+
+                        <label>Nama Lengkap</label>
+
+                        <input
+                        type="text"
+                        id="nama"
+                        placeholder="Masukkan nama">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Email</label>
+
+                        <input
+                        type="email"
+                        id="email"
+                        placeholder="Masukkan email">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Bio</label>
+
+                        <textarea
+                        id="bio"
+                        rows="4"
+                        placeholder="Tulis bio singkat..."></textarea>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <section class="target-card">
+
+                <h2>
+                    🎯 Target Membaca
+                </h2>
+
+                <div class="form-group">
+
+                    <label>Jumlah Buku Tahun Ini</label>
+
+                    <input
+                    type="number"
+                    id="targetBuku"
+                    placeholder="Contoh : 50">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Genre Favorit</label>
+
+                    <select id="genre">
+
+                    <option>Fantasy</option>
+                    <option>Romance</option>
+                    <option>Action</option>
+                    <option>Horror</option>
+                    <option>Komedi</option>
+                    <option>Drama</option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Platform Favorit</label>
+
+                    <select id="platform">
+
+                    <option>Novel</option>
+                    <option>Webtoon</option>
+                    <option>Wattpad</option>
+                    <option>Gramedia Digital</option>
+
+                    </select>
+
+                </div>
+
+            </section>
+
+            <section class="mini-statistic">
+
+                <h2>
+                📊 Statistik Akun
+                </h2>
+
+                <div class="stat-grid">
+                <div class="stat-box">
+                <h3 id="totalBook">0</h3>
+                <p>Total Buku</p>
+                </div>
+
+                <div class="stat-box">
+                <h3 id="selesaiBook">0</h3>
+                <p>Selesai</p>
+                </div>
+
+                <div class="stat-box">
+                <h3 id="prosesBook">0</h3>
+                <p>Sedang Dibaca</p>
+                </div>
+
+                <div class="stat-box">
+                <h3 id="wishlistBook">0</h3>
+                <p>Wishlist</p>
+                </div>
+                </div>
+
+            </section>
+
+            <section class="button-profile">
+
+                <button id="saveProfile">
+
+                    <i class="fas fa-floppy-disk"></i>
+
+                    Simpan
+
+                </button>
+
+                <button id="resetProfile">
+
+                    <i class="fas fa-rotate-left"></i>
+
+                    Reset
+
+                </button>
+
+            </section>
+
+        </div>
+
+        <script src="assets/js/script.js"></script>
+        <script src="assets/js/profile.js"></script>
+
+    </body>
+</html>
