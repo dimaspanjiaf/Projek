@@ -2273,3 +2273,100 @@ body.dark-mode .menu:hover{
 body.dark-mode .menu.active{
     background:#4b5563;
 }
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+
+  /* Sidebar jadi atas */
+  .sidebar{
+    position: relative;
+    width: 100%;
+    height: auto;
+    padding: 15px;
+  }
+
+  /* Konten memenuhi layar */
+  .main,
+  .main-content{
+    margin-left: 0;
+    width: 100%;
+    padding: 15px;
+  }
+
+  /* Topbar ditumpuk */
+  .topbar{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .topbar-right{
+    text-align: left;
+  }
+
+  /* 4 kartu statistik */
+  .cards{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .stat-card{
+    width: 100%;
+    height: auto;
+  }
+
+  /* Progress */
+  .progress-card{
+    width: 100%;
+  }
+
+  /* Quick Action */
+  .quick-actions{
+    flex-direction: column;
+  }
+
+  .quick-card{
+    width: 100%;
+  }
+
+  /* Tabel bisa digeser */
+  .table-section{
+    overflow-x: auto;
+  }
+
+  table{
+    min-width: 700px;
+  }
+
+  /* Chart */
+  .charts{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chart-box{
+    width: 100%;
+  }
+
+}
+
+@media (max-width:480px){
+
+  .logo{
+    font-size:24px;
+  }
+
+  .topbar-left h2{
+    font-size:28px;
+  }
+
+  #clock{
+    font-size:24px;
+  }
+
+  .card h1{
+    font-size:32px;
+  }
+
+}
