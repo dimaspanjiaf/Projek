@@ -772,19 +772,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 // ================= CLOCK =================
-function updateClock(){
+function updateClock() {
   const clock = document.getElementById("clock");
-  if(!clock) return;
+  const date = document.getElementById("date");
+
+  if (!clock || !date) return;
 
   const now = new Date();
-  clock.innerHTML = now.toLocaleTimeString("id-ID") + "<br>" +
-    now.toLocaleDateString("id-ID", {
-      weekday: "long", day: "numeric", month: "long", year: "numeric"
-    });
+
+  // Jam
+  clock.textContent = now.toLocaleTimeString("id-ID");
+
+  // Tanggal
+  date.textContent = now.toLocaleDateString("id-ID", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
 }
+
 setInterval(updateClock, 1000);
 document.addEventListener("DOMContentLoaded", updateClock);
-
 
 // ================= PASSWORD STRENGTH =================
 function cekPassword(){

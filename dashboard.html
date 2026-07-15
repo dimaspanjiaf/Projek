@@ -59,12 +59,16 @@
 
     <!-- TOPBAR -->
     <div class="topbar">
-    <div id="clock"></div>
 
-      <div>
+    <div class="topbar-left">
         <h2 id="teksSapaan">Selamat Datang 👋</h2>
         <p>Kelola progress bacaanmu dengan mudah.</p>
-      </div>
+    </div>
+
+    <div class="topbar-right">
+        <div id="clock"></div>
+        <div id="date"></div>
+    </div>
 
     </div>
 
@@ -105,43 +109,49 @@
     <div class="reminder-box" id="reminderBox"></div>
     <div class="cards">
 
-      <div class="card green">
+      <div class="cards">
+
+      <div class="card stat-card green">
         <h1 id="totalBuku">0</h1>
         <p>Total Buku</p>
       </div>
 
-      <div class="card blue">
+      <div class="card stat-card blue">
         <h1 id="selesaiBuku">0</h1>
         <p>Selesai</p>
       </div>
 
-      <div class="card orange">
+      <div class="card stat-card orange">
         <h1 id="dibacaBuku">0</h1>
         <p>Sedang Dibaca</p>
       </div>
 
-      <div class="card pink">
+      <div class="card stat-card pink">
         <h1 id="wishlistBuku">0</h1>
         <p>Wishlist</p>
       </div>
 
     </div>
 
-   <div class="card progress-card">
-
-    <h2>📖 Progress Membaca</h2>
-
-    <div class="progress-ring">
-
-        <canvas id="averageProgressChart"></canvas>
-
-        <div class="progress-center">
-            <span id="averageProgress">0%</span>
-        </div>
-
     </div>
 
-    <p>Rata-rata Progress Membaca</p>
+   <div class="progress-wrapper">
+
+    <div class="card progress-card">
+
+        <h2>📖 Progress Membaca</h2>
+
+        <div class="progress-ring">
+            <canvas id="averageProgressChart"></canvas>
+
+            <div class="progress-center">
+                <span id="averageProgress">0%</span>
+            </div>
+        </div>
+
+        <p>Rata-rata Progress Membaca</p>
+
+    </div>
 
 </div>
 
