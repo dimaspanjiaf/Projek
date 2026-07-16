@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Tambah Buku</title>
+
+    <link
+        rel="stylesheet"
+        href="assets/css/style.css"
+    >
+</head>
+
+<body class="add-book-page">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+        <h1 class="logo">
+            📚 MyLibrary
+        </h1>
+
+        <a href="index.html" class="menu">
+            Home
+        </a>
+
+        <a href="dashboard.html" class="menu">
+            Dashboard
+        </a>
+
+        <a
+            href="add-book.html"
+            class="menu active">
+            Tambah Buku
+        </a>
+        
+        <a href="about.html" class="menu">
+            About
+        </a>
+        
+        <a href="profile.html" class="menu">
+            Profile
+        </a>
+
+        <a href="login.html" class="menu">
+            Login
+        </a>
+
+        <button class="dark-btn" onclick="toggleDarkMode()">
+        🌙 Dark Mode
+        </button>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <div class="add-book-container">
+            <div class="form-card">
+                <h2>Add Book Progress</h2>
+
+                <!-- JUDUL -->
+                <input
+                    type="text"
+                    id="judul"
+                    placeholder="Judul Buku"
+                    maxlength="100"
+                    oninput="updateCounter()"
+                    onblur="capitalizeJudul()"
+                >
+
+                <small id="judulCounter">
+                0 / 150 karakter
+                </small>
+                <!-- EPISODE -->
+                <input
+                    type="number"
+                    id="episode"
+                    placeholder="Episode / Chapter"
+                    min="0"
+                >
+
+                <!-- GENRE -->
+                <input
+                    type="text"
+                    id="genre"
+                    placeholder="Genre Buku"
+                >
+
+                <!-- Platform -->
+                <select id="platform">
+                    <option value="">Pilih Platform Bacaan</option>
+                    <option value="Wattpad">Wattpad</option>
+                    <option value="Webtoon">Webtoon</option>
+                    <option value="Twitter">Twitter (X)</option>
+                    <option value="Instagram">Instagram</option>
+                    <option value="Buku Fisik">Buku Fisik</option>
+                    <option value="Lainnya">Lainnya</option>
+                </select>
+
+                <!-- status -->
+                <select id="status">
+                    <option value="">Pilih Status Bacaan</option>
+                    <option value="Sedang Dibaca">Sedang Dibaca</option>
+                    <option value="Selesai">Selesai</option>
+                    <option value="Wishlist">Wishlist</option>
+                </select>
+
+                <!-- PROGRESS -->
+                <input
+                    type="number"
+                    id="progress"
+                    placeholder="Progress (%)"
+                    min="0"
+                    max="100"
+                >
+
+                <!-- BUTTON -->
+                <button onclick="tambahData()">
+                    Simpan Progress
+                </button>
+
+                <button type="button" onclick="resetForm()" class="btn-reset">
+                    Reset Form
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+
+</body>
+</html>
